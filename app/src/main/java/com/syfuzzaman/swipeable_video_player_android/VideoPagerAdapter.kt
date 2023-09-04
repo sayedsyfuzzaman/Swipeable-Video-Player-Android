@@ -8,6 +8,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.datasource.DefaultDataSourceFactory
@@ -20,16 +23,27 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import okhttp3.OkHttpClient
 
 class VideoPagerAdapter(private val videoItems: List<VideoBean>, private val context: Context) :
     RecyclerView.Adapter<VideoPagerAdapter.VideoViewHolder>() {
 
-    private lateinit var player: ExoPlayer
+    private var player: ExoPlayer? = null
+    private var holder: VideoViewHolder? = null
     private var httpDataSourceFactory: OkHttpDataSource.Factory? = null
 
     class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val videoFrame: PlayerView = itemView.findViewById(R.id.videoFrame)
+        val description: TextView = itemView.findViewById(R.id.description)
+        val author: TextView = itemView.findViewById(R.id.userName)
+        val subscribe: MaterialButton = itemView.findViewById(R.id.button)
+        val search: ImageView = itemView.findViewById(R.id.search)
+        val menu: ImageView = itemView.findViewById(R.id.menu)
+        val like: ImageView = itemView.findViewById(R.id.like)
+        val dislike: ImageView = itemView.findViewById(R.id.dislike)
+        val comment: ImageView = itemView.findViewById(R.id.comment)
+        val share: ImageView = itemView.findViewById(R.id.share)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
@@ -41,9 +55,35 @@ class VideoPagerAdapter(private val videoItems: List<VideoBean>, private val con
     @SuppressLint("UnsafeOptInUsageError")
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         Log.d("nex_shorts", "Binding position: $position")
-
-        Log.d("YT Shorts", "Binding position: $position")
+        this.holder = holder
         val videoElement = videoItems[position]
+
+        holder.description.text = videoElement.description
+        holder.author.text = videoElement.subtitle
+
+        holder.subscribe.setOnClickListener {
+            Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
+        }
+        holder.search.setOnClickListener {
+            Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
+        }
+        holder.menu.setOnClickListener {
+            Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
+        }
+        holder.like.setOnClickListener {
+            Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
+        }
+        holder.dislike.setOnClickListener {
+            Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
+        }
+        holder.comment.setOnClickListener {
+            Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
+        }
+        holder.share.setOnClickListener {
+            Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
+        }
+
+
         val trackSelector = DefaultTrackSelector(context).apply {
             setParameters(buildUponParameters().setMaxVideoSizeSd())
         }
@@ -94,7 +134,7 @@ class VideoPagerAdapter(private val videoItems: List<VideoBean>, private val con
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
         Log.d("Yt Shorts", "Player Released onDetach")
-        player.release()
+        player?.release()
     }
 
     override fun onViewRecycled(holder: VideoViewHolder) {
@@ -109,4 +149,12 @@ class VideoPagerAdapter(private val videoItems: List<VideoBean>, private val con
     }
 
     override fun getItemCount(): Int = videoItems.size
+
+    fun pause(){
+        this.holder?.videoFrame?.player?.pause()
+    }
+    fun play(){
+        this.holder?.videoFrame?.player?.play()
+
+    }
 }
