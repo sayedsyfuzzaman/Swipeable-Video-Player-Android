@@ -3,13 +3,8 @@ package com.syfuzzaman.swipeable_video_player_android
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.common.util.Util
-import androidx.media3.datasource.okhttp.OkHttpDataSource
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.viewpager2.widget.ViewPager2
 import com.syfuzzaman.swipeable_video_player_android.databinding.ActivityMainBinding
-import okhttp3.OkHttpClient
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -83,7 +78,8 @@ class MainActivity : AppCompatActivity() {
                 ),
                 VideoBean(
                     description = "Daytona ready",
-                    sources = "https://iptv-isp.nexdecade.com/vod/shorts/clip/3.mp4/playlist.m3u8",
+                    sources = "https://vodmprod-cdn.toffeelive.com/9becd818ede2eb9a09a4a04f74ea1460/manifest.m3u8",
+//                    sources = "https://iptv-isp.nexdecade.com/vod/shorts/clip/3.mp4/playlist.m3u8",
                     subtitle = "John Hunter Nemeche",
                     thumb = "images/ElephantsDream.jpg",
                     title = "Elephant Dream"
@@ -126,20 +122,5 @@ class MainActivity : AppCompatActivity() {
 
             )
         )
-    }
-
-    override fun onPause() {
-        super.onPause()
-        videoPagerAdapter.pause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        videoPagerAdapter.play()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        videoPagerAdapter?.
     }
 }

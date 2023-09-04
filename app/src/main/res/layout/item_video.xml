@@ -40,11 +40,12 @@
                 android:gravity="center"
                 android:keepScreenOn="true"
                 app:auto_show="false"
+                app:controller_layout_id="@layout/custom_player_view"
                 app:resize_mode="fixed_width"
                 app:show_buffering="when_playing"
-                app:show_shuffle_button="true"
+                app:show_shuffle_button="false"
                 app:surface_type="surface_view"
-                app:use_controller="false" />
+                app:use_controller="true" />
         </FrameLayout>
 
         <ImageView
