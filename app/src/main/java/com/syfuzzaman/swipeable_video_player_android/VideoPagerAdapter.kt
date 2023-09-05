@@ -27,18 +27,22 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.material.button.MaterialButton
+import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
 import okhttp3.OkHttpClient
 import java.io.File
+import kotlin.math.log
 
 @SuppressLint("UnsafeOptInUsageError")
-class VideoPagerAdapter(private val videoItems: List<VideoBean>, private val context: Context) :
+class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBean>, private val context: Context) :
     RecyclerView.Adapter<VideoPagerAdapter.VideoViewHolder>() {
 
     private var player: ExoPlayer? = null
-    private var holder: VideoViewHolder? = null
     private var httpDataSourceFactory: OkHttpDataSource.Factory? = null
     private var simpleCache: SimpleCache
+
 
     init {
         val evict = LeastRecentlyUsedCacheEvictor((100 * 1024 * 1024).toLong())
@@ -54,25 +58,36 @@ class VideoPagerAdapter(private val videoItems: List<VideoBean>, private val con
         val search: ImageView = itemView.findViewById(R.id.search)
         val menu: ImageView = itemView.findViewById(R.id.menu)
         val like: ImageView = itemView.findViewById(R.id.like)
+        val likeCount: TextView = itemView.findViewById(R.id.likeCount)
         val dislike: ImageView = itemView.findViewById(R.id.dislike)
+        val dislikeCount: TextView = itemView.findViewById(R.id.dislikeCount)
         val comment: ImageView = itemView.findViewById(R.id.comment)
         val share: ImageView = itemView.findViewById(R.id.share)
+        val tags: TextView = itemView.findViewById(R.id.tags)
+        val userProfileImage: ImageView = itemView.findViewById(R.id.userProfileImage)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val videoPager = LayoutInflater.from(parent.context).inflate(R.layout.item_video, parent, false)
-        Log.d("nex_shorts", "onCreateViewHolder Called")
+        Log.d("nd_shorts", "onCreateViewHolder Called")
         return VideoViewHolder(videoPager)
     }
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
-        Log.d("nex_shorts", "Binding position: $position")
-        this.holder = holder
+        Log.d("nd_shorts", "Binding position: $position")
         val videoElement = videoItems[position]
 
         holder.description.text = videoElement.description
-        holder.author.text = videoElement.subtitle
+        holder.author.text = videoElement.channelName
+        holder.likeCount.text = videoElement.reactions?.likes.toString() ?: ""
+        holder.dislikeCount.text = videoElement.reactions?.dislikes.toString() ?: ""
+        holder.tags.text = videoElement.tags.toString()
+
+        holder.userProfileImage.load(videoElement.channelPhotoUrl){
+            transformations(CircleCropTransformation())
+        }
 
         holder.subscribe.setOnClickListener {
             Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
@@ -101,7 +116,7 @@ class VideoPagerAdapter(private val videoItems: List<VideoBean>, private val con
             .addInterceptor { chain ->
                 val originalRequest = chain.request()
                 val modifiedRequest = originalRequest.newBuilder()
-                    .header("Cookie",  "Edge-Cache-Cookie=URLPrefix=aHR0cHM6Ly92b2RtcHJvZC1jZG4udG9mZmVlbGl2ZS5jb20v:Expires=1717147185:KeyName=prod_vod:Signature=SuLzgbQdZPy7lRNYqkSYEBTklI-YYQvdZ7rH1RUkKP-LRv9bWNxkUdpBDnEmdaCbg8tlmTwvcR3a8oHj3xhsAA")
+//                    .header("Cookie",  "")
                     .build()
                 chain.proceed(modifiedRequest)
             }
@@ -140,7 +155,7 @@ class VideoPagerAdapter(private val videoItems: List<VideoBean>, private val con
                 holder.videoFrame.player = exoPlayer
 //                val mediaItem = MediaItem.fromUri(Uri.parse(videoElement.sources))
                 val mediaItem = MediaItem.Builder()
-                    .setUri(videoElement.sources)
+                    .setUri(videoElement.mediaUrl)
                     .setMimeType(MimeTypes.APPLICATION_M3U8)
                     .build()
                 val httpDataSourceFactory =
@@ -164,6 +179,7 @@ class VideoPagerAdapter(private val videoItems: List<VideoBean>, private val con
 
     override fun onViewAttachedToWindow(holder: VideoViewHolder) {
         super.onViewAttachedToWindow(holder)
+        Log.d("nd_shorts", "onViewAttachedToWindow: ")
         holder.videoFrame.player?.apply {
             seekTo(0)
             playWhenReady = true
@@ -175,14 +191,14 @@ class VideoPagerAdapter(private val videoItems: List<VideoBean>, private val con
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
-        Log.d("Yt Shorts", "Player Released onDetach")
+        Log.d("nd_shorts", "Player Released onDetach")
         player?.release()
         simpleCache.release()
     }
 
     override fun onViewRecycled(holder: VideoViewHolder) {
         super.onViewRecycled(holder)
-        Log.d("YT Shorts", "View recycled")
+        Log.d("nd_shorts", "View recycled")
         holder.videoFrame.player?.release()
     }
 
@@ -194,10 +210,9 @@ class VideoPagerAdapter(private val videoItems: List<VideoBean>, private val con
     override fun getItemCount(): Int = videoItems.size
 
     fun pause(){
-        this.holder?.videoFrame?.player?.pause()
+        Log.d("nd_shorts", "pause: ")
+        player?.playWhenReady = false
+        player?.pause()
     }
-    fun play(){
-        this.holder?.videoFrame?.player?.play()
 
-    }
 }

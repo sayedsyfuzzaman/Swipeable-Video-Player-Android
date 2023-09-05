@@ -2,21 +2,32 @@ package com.syfuzzaman.swipeable_video_player_android
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.media3.common.util.UnstableApi
 import androidx.viewpager2.widget.ViewPager2
+import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
+import com.syfuzzaman.swipeable_video_player_android.data.Resource
+import com.syfuzzaman.swipeable_video_player_android.data.observe
 import com.syfuzzaman.swipeable_video_player_android.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.math.log
 
 @UnstableApi
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var videoList: VideoList
-    private lateinit var videoPagerAdapter: VideoPagerAdapter
+    private var videoPagerAdapter: VideoPagerAdapter? = null
+    private val viewModel by viewModels<MyViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -30,10 +41,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewPager = findViewById(R.id.viewPager)
-        loadVideoData()
+//        loadVideoData()
+        observeShortsResponse()
+        viewModel.getShortsResponse()
 
-        videoPagerAdapter = VideoPagerAdapter(videoList.videos, this)
-        viewPager.adapter = videoPagerAdapter
+    }
+
+    private fun observeShortsResponse(){
+        observe(viewModel.shortsResponse){
+            when(it){
+                is Resource.Success ->{
+                    Log.d("ND_SHORTS", "observeShortsResponse: ${it.data.shorts}")
+                    videoPagerAdapter = VideoPagerAdapter(it.data.shorts.asReversed(), this)
+                    viewPager.adapter = videoPagerAdapter
+                }
+                is Resource.Failure ->{
+                    Toast.makeText(this, it.error.msg, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun bdTime(): Date {
@@ -85,6 +111,13 @@ class MainActivity : AppCompatActivity() {
                     title = "Elephant Dream"
                 ),
                 VideoBean(
+                    description = "Daytona ready",
+                    sources = "https://iptv-isp.nexdecade.com/vod/shorts/clip/3.mp4/playlist.m3u8",
+                    subtitle = "John Hunter Nemeche",
+                    thumb = "images/ElephantsDream.jpg",
+                    title = "Elephant Dream"
+                ),
+                VideoBean(
                     description = "NASCAR race pit stop",
                     sources = "https://iptv-isp.nexdecade.com/vod/shorts/clip/4.mp4/playlist.m3u8",
                     subtitle = "John Hunter Nemeche",
@@ -122,5 +155,11 @@ class MainActivity : AppCompatActivity() {
 
             )
         )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("nd_shorts", "onPause: sd")
+        videoPagerAdapter?.pause()
     }
 }

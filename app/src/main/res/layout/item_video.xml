@@ -45,7 +45,7 @@
                 app:show_buffering="when_playing"
                 app:show_shuffle_button="false"
                 app:surface_type="surface_view"
-                app:use_controller="true" />
+                app:use_controller="true"/>
         </FrameLayout>
 
         <ImageView
@@ -182,30 +182,42 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.8" />
 
-
-        <TextView
-            android:id="@+id/userName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:drawableLeft="@drawable/ic_user"
-            android:drawablePadding="6dp"
-            android:drawableTint="@color/white"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="Syed Syfuzzaman"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/button"
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:id="@+id/userProfileImage"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/userName"
+            android:background="@drawable/circular_shape"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/description"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintVertical_bias="1"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            />
+
+
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Syed Syfuzzaman"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="6dp"
+            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintStart_toEndOf="@id/userProfileImage"
+            app:layout_constraintTop_toTopOf="@id/userProfileImage"
+            app:layout_constraintBottom_toBottomOf="@id/userProfileImage"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button"
@@ -219,7 +231,8 @@
             app:layout_constraintBottom_toBottomOf="@id/userName"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="@id/userName"
-            app:layout_constraintStart_toEndOf="@id/userName"/>
+            app:layout_constraintStart_toEndOf="@id/userName"
+            android:layout_marginStart="6dp"/>
 
         <TextView
             android:id="@+id/description"
@@ -232,7 +245,7 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/userName"
+            app:layout_constraintTop_toBottomOf="@id/userProfileImage"
             app:layout_constraintBottom_toTopOf="@id/tags"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
