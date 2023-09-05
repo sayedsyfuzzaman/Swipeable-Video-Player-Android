@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/shortsFragment">
+
+    <fragment
+        android:id="@+id/homeFragment2"
+        android:name="com.syfuzzaman.swipeable_video_player_android.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/shortsFragment"
+        android:name="com.syfuzzaman.swipeable_video_player_android.ShortsFragment"
+        android:label="fragment_shorts"
+        tools:layout="@layout/fragment_shorts" />
+</navigation>

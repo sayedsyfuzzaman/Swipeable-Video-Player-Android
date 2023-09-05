@@ -55,8 +55,6 @@ class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBea
         val description: TextView = itemView.findViewById(R.id.description)
         val author: TextView = itemView.findViewById(R.id.userName)
         val subscribe: MaterialButton = itemView.findViewById(R.id.button)
-        val search: ImageView = itemView.findViewById(R.id.search)
-        val menu: ImageView = itemView.findViewById(R.id.menu)
         val like: ImageView = itemView.findViewById(R.id.like)
         val likeCount: TextView = itemView.findViewById(R.id.likeCount)
         val dislike: ImageView = itemView.findViewById(R.id.dislike)
@@ -90,12 +88,6 @@ class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBea
         }
 
         holder.subscribe.setOnClickListener {
-            Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
-        }
-        holder.search.setOnClickListener {
-            Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
-        }
-        holder.menu.setOnClickListener {
             Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
         }
         holder.like.setOnClickListener {
