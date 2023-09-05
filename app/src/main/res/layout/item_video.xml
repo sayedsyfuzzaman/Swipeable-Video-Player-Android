@@ -74,6 +74,7 @@
             android:text="102K"
             android:textColor="@color/white"
             android:textSize="14sp"
+            android:fontFamily="@font/roboto"
             android:maxLines="1"
             android:ellipsize="end"
             android:layout_marginBottom="40dp"
@@ -106,6 +107,7 @@
             android:layout_height="wrap_content"
             android:text="102K"
             android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
             android:textSize="14sp"
             android:maxLines="1"
             android:ellipsize="end"
@@ -167,18 +169,19 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintVertical_bias="1"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="8dp"
             />
 
 
 
         <TextView
             android:id="@+id/userName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Syed Syfuzzaman"
+            android:fontFamily="@font/roboto_medium"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="normal"
@@ -189,12 +192,13 @@
             app:layout_constraintBottom_toBottomOf="@id/userProfileImage"
             />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:backgroundTint="#FF0000"
+            android:backgroundTint="#cc0001"
             android:text="Subscribe"
+            android:fontFamily="@font/roboto_medium"
             android:textColor="@color/white"
             android:padding="0dp"
             android:textSize="14sp"
@@ -214,6 +218,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
             android:text="Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one s"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@id/guideline"
@@ -221,7 +226,6 @@
             app:layout_constraintTop_toBottomOf="@id/userProfileImage"
             app:layout_constraintBottom_toTopOf="@id/tags"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="4dp"
             />
 
         <TextView
@@ -232,6 +236,7 @@
             android:maxLines="2"
             android:textColor="@color/white"
             android:text="#Bike, #R15, #YAMAHA"
+            android:fontFamily="@font/roboto"
             android:textStyle="bold"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@id/guideline"

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -41,7 +42,7 @@ class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBea
 
     private var player: ExoPlayer? = null
     private var httpDataSourceFactory: OkHttpDataSource.Factory? = null
-    private var simpleCache: SimpleCache
+    var simpleCache: SimpleCache
 
 
     init {
@@ -54,7 +55,7 @@ class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBea
         val videoFrame: PlayerView = itemView.findViewById(R.id.videoFrame)
         val description: TextView = itemView.findViewById(R.id.description)
         val author: TextView = itemView.findViewById(R.id.userName)
-        val subscribe: MaterialButton = itemView.findViewById(R.id.button)
+        val subscribe: Button = itemView.findViewById(R.id.button)
         val like: ImageView = itemView.findViewById(R.id.like)
         val likeCount: TextView = itemView.findViewById(R.id.likeCount)
         val dislike: ImageView = itemView.findViewById(R.id.dislike)
@@ -192,19 +193,20 @@ class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBea
         super.onViewRecycled(holder)
         Log.d("nd_shorts", "View recycled")
         holder.videoFrame.player?.release()
+        simpleCache.release()
     }
 
     override fun onViewDetachedFromWindow(holder: VideoViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.videoFrame.player?.pause()
+        simpleCache.release()
     }
 
     override fun getItemCount(): Int = videoItems.size
 
-    fun pause(){
-        Log.d("nd_shorts", "pause: ")
-        player?.playWhenReady = false
-        player?.pause()
+    fun release(){
+        player?.release()
+        simpleCache.release()
     }
 
 }
