@@ -1,5 +1,6 @@
 package com.syfuzzaman.swipeable_video_player_android.data
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,8 @@ class MyViewModel @Inject constructor(
     val shortsAutoPlayResponse =  SingleLiveEvent<Resource<ShortsAPIResponse>>()
     val shortsBannerResponse =  SingleLiveEvent<Resource<ShortsAPIResponse>>()
     var featuredJob: Job? = null
+    var swipeJob = MutableLiveData<Boolean>()
+
     fun getShortsResponse(){
         viewModelScope.launch {
             val response = resultFromResponse { apiService.execute() }

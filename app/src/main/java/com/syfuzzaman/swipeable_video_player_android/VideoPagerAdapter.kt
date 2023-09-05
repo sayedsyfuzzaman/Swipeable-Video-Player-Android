@@ -12,8 +12,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
+import androidx.media3.common.Player
 import androidx.media3.database.DatabaseProvider
 import androidx.media3.database.StandaloneDatabaseProvider
 import androidx.media3.datasource.DefaultDataSourceFactory
@@ -31,18 +33,20 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.google.android.material.button.MaterialButton
+import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
 import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
 import okhttp3.OkHttpClient
 import java.io.File
 import kotlin.math.log
 
 @SuppressLint("UnsafeOptInUsageError")
-class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBean>, private val context: Context) :
+class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBean>, private val context: Context, private val viewModel: MyViewModel ) :
     RecyclerView.Adapter<VideoPagerAdapter.VideoViewHolder>() {
 
     private var player: ExoPlayer? = null
     private var httpDataSourceFactory: OkHttpDataSource.Factory? = null
     var simpleCache: SimpleCache
+    private var currentVideoIndex: Int = 0
 
 
     init {
@@ -117,25 +121,7 @@ class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBea
 
         // Create a HttpDataSourceFactory with the custom OkHttpClient
         httpDataSourceFactory = OkHttpDataSource.Factory(client)
-
         val mediaSourceFactory = DefaultMediaSourceFactory(httpDataSourceFactory!!)
-
-//        player = ExoPlayer.Builder(context)
-//            .setTrackSelector(trackSelector)
-//            .setMediaSourceFactory(mediaSourceFactory)
-//            .build()
-//            .also { exoPlayer ->
-//                holder.videoFrame.player = exoPlayer
-//                val mediaItem = MediaItem.Builder()
-//                    .setUri(videoElement.sources)
-//                    .setMimeType(MimeTypes.APPLICATION_M3U8)
-//                    .build()
-//                exoPlayer.setMediaItem(mediaItem)
-//                exoPlayer.playWhenReady = false
-//                exoPlayer.repeatMode = ExoPlayer.REPEAT_MODE_ONE
-//                exoPlayer.prepare()
-//                exoPlayer.play()
-//            }
 
         val trackSelector = DefaultTrackSelector(context).apply {
             setParameters(buildUponParameters().setMaxVideoSizeSd())
@@ -165,9 +151,22 @@ class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBea
                 exoPlayer.setMediaSource(mediaSource)
                 exoPlayer.setMediaItem(mediaItem)
                 exoPlayer.playWhenReady = false
-                exoPlayer.repeatMode = ExoPlayer.REPEAT_MODE_ONE
                 exoPlayer.prepare()
             }
+
+
+        // Set an event listener to detect when the video playback ends
+        player?.addListener( object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                when (playbackState) {
+                    Player.STATE_ENDED -> {
+                        viewModel.swipeJob.value = true
+                        Log.d("PAGE_SCROLL", "startPageScroll: video ends")
+                    }
+
+                }
+            }
+        })
     }
 
     override fun onViewAttachedToWindow(holder: VideoViewHolder) {
