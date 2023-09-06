@@ -40,14 +40,17 @@ import java.io.File
 import kotlin.math.log
 
 @SuppressLint("UnsafeOptInUsageError")
-class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBean>, private val context: Context, private val viewModel: MyViewModel ) :
+class VideoPagerAdapter(
+    private val videoItems: List<ShortsAPIResponse.ShortsBean>,
+    private val context: Context,
+    private val viewModel: MyViewModel
+) :
     RecyclerView.Adapter<VideoPagerAdapter.VideoViewHolder>() {
 
     private var player: ExoPlayer? = null
     private var httpDataSourceFactory: OkHttpDataSource.Factory? = null
     var simpleCache: SimpleCache
-    private var currentVideoIndex: Int = 0
-
+    var hashMap: HashMap<Int, VideoViewHolder> = HashMap()
 
     init {
         val evict = LeastRecentlyUsedCacheEvictor((100 * 1024 * 1024).toLong())
@@ -80,6 +83,9 @@ class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBea
     @SuppressLint("UnsafeOptInUsageError")
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         Log.d("nd_shorts", "Binding position: $position")
+
+        hashMap.put(position, holder)
+
         val videoElement = videoItems[position]
 
         holder.description.text = videoElement.description
@@ -164,6 +170,10 @@ class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBea
                         Log.d("PAGE_SCROLL", "startPageScroll: video ends")
                     }
 
+                    else -> {
+                        viewModel.swipeJob.value = false
+                    }
+
                 }
             }
         })
@@ -203,9 +213,25 @@ class VideoPagerAdapter(private val videoItems: List<ShortsAPIResponse.ShortsBea
 
     override fun getItemCount(): Int = videoItems.size
 
-    fun release(){
+
+    /* To stop the playing videos if any on activity closing,
+    we need to get the playing position in adapter and
+    stop the player and remove player view of that view-holder.
+    */
+    fun release() {
         player?.release()
         simpleCache.release()
+
+        for (key in hashMap.keys) {
+            hashMap[key]?.videoFrame?.player?.release()
+        }
+    }
+
+    fun pause() {
+        player?.pause()
+        for (key in hashMap.keys) {
+            hashMap[key]?.videoFrame?.player?.pause()
+        }
     }
 
 }
