@@ -2,17 +2,11 @@ package com.syfuzzaman.swipeable_video_player_android
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
-import android.text.InputFilter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.Player
@@ -28,17 +22,14 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
-import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.google.android.material.button.MaterialButton
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
 import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
 import com.syfuzzaman.swipeable_video_player_android.databinding.ItemVideoBinding
 import okhttp3.OkHttpClient
 import java.io.File
-import kotlin.math.log
 
 @SuppressLint("UnsafeOptInUsageError")
 class VideoPagerAdapter(
@@ -72,8 +63,11 @@ class VideoPagerAdapter(
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         with(holder.binding) {
             Log.d("nd_shorts", "Binding position: $position")
+
+            hashMap.put(position, holder)
+
             val videoElement = videoItems[position]
-            
+
             description.text = videoElement.description
             userName.text = videoElement.channelName
             likeCount.text = videoElement.reactions?.likes.toString() ?: ""
@@ -156,25 +150,19 @@ class VideoPagerAdapter(
                             Log.d("PAGE_SCROLL", "startPageScroll: video ends")
                         }
 
-                    else -> {
-                        viewModel.swipeJob.value = false
+                        else -> {
+                            viewModel.swipeJob.value = false
+                        }
+
                     }
-
                 }
-            }
-        })
+            })
+        }
     }
-
+    
     override fun onViewAttachedToWindow(holder: VideoViewHolder) {
         super.onViewAttachedToWindow(holder)
         Log.d("nd_shorts", "onViewAttachedToWindow: ")
-        holder.binding.videoFrame.player?.apply {
-            seekTo(0)
-            playWhenReady = true
-            if (this.playerError != null) {
-                prepare()
-            }
-        }
     }
     
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
@@ -199,6 +187,16 @@ class VideoPagerAdapter(
 
     override fun getItemCount(): Int = videoItems.size
 
+    fun startPlaying(position: Int) {
+        pause()
+        hashMap[position]?.binding?.videoFrame?.player?.apply {
+            seekTo(0)
+            playWhenReady = true
+            if (this.playerError != null) {
+                prepare()
+            }
+        }
+    }
 
     /* To stop the playing videos if any on activity closing,
     we need to get the playing position in adapter and
@@ -220,4 +218,7 @@ class VideoPagerAdapter(
         }
     }
 
+    fun resume(currentItem: Int) {
+        hashMap[currentItem]?.binding?.videoFrame?.player?.play()
+    }
 }

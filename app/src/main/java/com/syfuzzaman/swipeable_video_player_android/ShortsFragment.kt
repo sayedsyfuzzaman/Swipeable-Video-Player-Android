@@ -34,12 +34,20 @@ class ShortsFragment : Fragment() {
 
     }
 
+    private val viewPagerPageChangedCallback = object : OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            videoPagerAdapter?.startPlaying(position)
+        }
+    }
+    
     private fun observeShortsResponse() {
         observe(viewModel.shortsResponse) {
             when (it) {
                 is Resource.Success -> {
                     Log.d("ND_SHORTS", "observeShortsResponse: ${it.data.shorts}")
                     videoPagerAdapter = VideoPagerAdapter(requireContext(), viewModel, it.data.shorts.asReversed().subList(selectedPosition, it.data.shorts.asReversed().size))
+                    binding.viewPager.registerOnPageChangeCallback(viewPagerPageChangedCallback)
                     binding.viewPager.adapter = videoPagerAdapter
                     scrollToNext()
                 }
@@ -68,12 +76,18 @@ class ShortsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         videoPagerAdapter?.release()
+        binding.viewPager.unregisterOnPageChangeCallback(viewPagerPageChangedCallback)
     }
     override fun onDestroyView() {
         super.onDestroyView()
         videoPagerAdapter?.release()
     }
 
+    override fun onResume() {
+        super.onResume()
+        videoPagerAdapter?.resume(binding.viewPager.currentItem)
+    }
+    
     override fun onPause() {
         super.onPause()
         videoPagerAdapter?.pause()
