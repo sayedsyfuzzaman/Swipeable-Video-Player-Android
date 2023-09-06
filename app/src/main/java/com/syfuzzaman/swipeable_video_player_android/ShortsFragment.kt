@@ -11,6 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
 import com.syfuzzaman.swipeable_video_player_android.data.Resource
+import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
+import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
 import com.syfuzzaman.swipeable_video_player_android.data.observe
 import com.syfuzzaman.swipeable_video_player_android.databinding.FragmentShortsBinding
 
@@ -20,6 +22,7 @@ class ShortsFragment : Fragment() {
     private var videoPagerAdapter: VideoPagerAdapter? = null
     private val viewModel by activityViewModels<MyViewModel>()
     private var selectedPosition = 0
+    private var shortsList: List<ShortsBean>? = null
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentShortsBinding.inflate(inflater, container, false)
@@ -28,9 +31,14 @@ class ShortsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        selectedPosition = arguments?.getInt("selectedPosition", 0) ?: 0
-        observeShortsResponse()
-        viewModel.getShortsResponse()
+//        selectedPosition = arguments?.getInt("selectedPosition", 0) ?: 0
+        shortsList = arguments?.getParcelableArrayList("shorts")
+        shortsList?.let { 
+            loadAdapter(it)
+        } ?: run {
+            observeShortsResponse()
+            viewModel.getShortsResponse()
+        }
 
     }
 
@@ -46,10 +54,7 @@ class ShortsFragment : Fragment() {
             when (it) {
                 is Resource.Success -> {
                     Log.d("ND_SHORTS", "observeShortsResponse: ${it.data.shorts}")
-                    videoPagerAdapter = VideoPagerAdapter(requireContext(), viewModel, it.data.shorts.asReversed().subList(selectedPosition, it.data.shorts.asReversed().size))
-                    binding.viewPager.registerOnPageChangeCallback(viewPagerPageChangedCallback)
-                    binding.viewPager.adapter = videoPagerAdapter
-                    scrollToNext()
+                    loadAdapter(it.data.shorts.asReversed())
                 }
 
                 is Resource.Failure -> {
@@ -57,6 +62,17 @@ class ShortsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun loadAdapter(shorts: List<ShortsBean>) {
+        videoPagerAdapter = VideoPagerAdapter(
+            requireContext(),
+            viewModel,
+            shorts
+        )
+        binding.viewPager.registerOnPageChangeCallback(viewPagerPageChangedCallback)
+        binding.viewPager.adapter = videoPagerAdapter
+        scrollToNext()
     }
 
     private fun scrollToNext() {

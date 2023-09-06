@@ -9,9 +9,10 @@ import androidx.fragment.app.activityViewModels
 import com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
 import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
+import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
 import com.syfuzzaman.swipeable_video_player_android.databinding.FragmentHomeBinding
 
-class HomeFragment : Fragment(), BaseListItemCallback<ShortsAPIResponse.ShortsBean> {
+class HomeFragment : Fragment(), BaseListItemCallback<ShortsBean> {
     private lateinit var binding: FragmentHomeBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

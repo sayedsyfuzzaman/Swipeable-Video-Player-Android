@@ -3,13 +3,21 @@ package com.syfuzzaman.swipeable_video_player_android
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import android.view.GestureDetector
+import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.Player
+import androidx.media3.common.Player.RepeatMode
 import androidx.media3.database.DatabaseProvider
 import androidx.media3.database.StandaloneDatabaseProvider
 import androidx.media3.datasource.DefaultDataSourceFactory
@@ -22,20 +30,23 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.ui.DefaultTimeBar
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
 import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
+import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
 import com.syfuzzaman.swipeable_video_player_android.databinding.ItemVideoBinding
 import okhttp3.OkHttpClient
 import java.io.File
+
 
 @SuppressLint("UnsafeOptInUsageError")
 class VideoPagerAdapter(
     private val context: Context,
     private val viewModel: MyViewModel,
-    private val videoItems: List<ShortsAPIResponse.ShortsBean>,
+    private val videoItems: List<ShortsBean>,
 ) : RecyclerView.Adapter<VideoPagerAdapter.VideoViewHolder>() {
 
     private var player: ExoPlayer? = null
@@ -67,7 +78,9 @@ class VideoPagerAdapter(
             hashMap.put(position, holder)
 
             val videoElement = videoItems[position]
-
+            val playPauseButton = videoFrame.findViewById<ImageView>(R.id.play_pause)
+            val progressBar = videoFrame.findViewById<DefaultTimeBar>(R.id.exo_progress)
+            
             description.text = videoElement.description
             userName.text = videoElement.channelName
             likeCount.text = videoElement.reactions?.likes.toString() ?: ""
@@ -93,8 +106,24 @@ class VideoPagerAdapter(
             share.setOnClickListener {
                 Toast.makeText(context, "Action Required!", Toast.LENGTH_SHORT).show()
             }
-
-
+            gestureOverlay.setOnClickListener {
+                val animation = AnimationUtils.loadAnimation(context, R.anim.zoom_in_anim)
+                
+                if (videoFrame.player?.isPlaying == true) {
+                    videoFrame.player?.pause()
+                    playPauseButton.setImageResource(R.drawable.ic_pause)
+                    playPauseButton.isVisible = true
+                    playPauseButton.startAnimation(animation)
+                    progressBar.showScrubber(0)
+                } else {
+                    videoFrame.player?.play()
+                    playPauseButton.setImageResource(R.drawable.ic_play_p)
+                    playPauseButton.isVisible = true
+                    playPauseButton.startAnimation(animation)
+                    progressBar.hideScrubber(0)
+                }
+            }
+            
             val client = OkHttpClient.Builder()
                 .addInterceptor { chain ->
                     val originalRequest = chain.request()
@@ -139,7 +168,6 @@ class VideoPagerAdapter(
                     exoPlayer.playWhenReady = false
                     exoPlayer.prepare()
                 }
-
 
             // Set an event listener to detect when the video playback ends
             player?.addListener(object : Player.Listener {
@@ -189,6 +217,8 @@ class VideoPagerAdapter(
 
     fun startPlaying(position: Int) {
         pause()
+        hashMap[position]?.binding?.videoFrame?.findViewById<ImageView>(R.id.play_pause)?.isVisible = false
+        hashMap[position]?.binding?.videoFrame?.findViewById<DefaultTimeBar>(R.id.exo_progress)?.hideScrubber(0)
         hashMap[position]?.binding?.videoFrame?.player?.apply {
             seekTo(0)
             playWhenReady = true

@@ -8,43 +8,44 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
-
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="left"
-        app:constraint_referenced_ids="exo_play_pause" />
-
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="right"
-        app:constraint_referenced_ids="exo_play_pause" />
-
-    <ImageButton
-        android:id="@+id/exo_play_pause"
-        style="@style/ExoStyledControls.Button.Center.PlayPause"
+    
+    <ImageView
+        android:id="@+id/play_pause"
         android:layout_width="56dp"
         android:layout_height="56dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/ic_pause"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="-8dp"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/exo_progress"
+        app:layout_constraintBottom_toBottomOf="parent" />
+    
     <androidx.media3.ui.DefaultTimeBar
         android:id="@+id/exo_progress"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginHorizontal="-6dp"
+        app:bar_height="2dp"
+        app:bar_gravity="bottom"
         app:buffered_color="@color/white"
         app:played_color="@android:color/holo_red_dark"
         app:scrubber_color="@android:color/holo_red_dark"
+        app:scrubber_drawable="@drawable/player_scrubber"
         app:unplayed_color="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

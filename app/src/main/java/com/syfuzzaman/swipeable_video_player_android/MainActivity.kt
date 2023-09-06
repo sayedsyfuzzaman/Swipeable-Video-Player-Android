@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -36,18 +37,22 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var navHostFragment: NavHostFragment
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        val date = Date(123, 8, 6)
+        val date = Date(123, 8, 9)
 
-//        if (bdTime() >= date) {
-//            this.finish()
-//        }
-
+        if (bdTime() >= date) {
+            Toast.makeText(this, "Demo Expired", Toast.LENGTH_LONG).show()
+            this.finish()
+        }
+        binding.uploadButton.setOnClickListener {
+            Toast.makeText(this, "Action Required", Toast.LENGTH_SHORT).show()
+        }
         setupNavController()
     }
 

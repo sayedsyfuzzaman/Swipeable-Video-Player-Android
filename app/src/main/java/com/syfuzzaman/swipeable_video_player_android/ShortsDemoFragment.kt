@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -14,18 +15,18 @@ import com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
 import com.syfuzzaman.swipeable_video_player_android.data.Resource
 import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
+import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
 import com.syfuzzaman.swipeable_video_player_android.data.navigateTo
 import com.syfuzzaman.swipeable_video_player_android.data.observe
 import com.syfuzzaman.swipeable_video_player_android.databinding.FragmentShortsDemoBinding
 
-class ShortsDemoFragment : Fragment(), BaseListItemCallback<ShortsAPIResponse.ShortsBean> {
+class ShortsDemoFragment : Fragment(), BaseListItemCallback<ShortsBean> {
     private lateinit var binding: FragmentShortsDemoBinding
     private val viewModel by activityViewModels<MyViewModel>()
     private lateinit var mAdapter: ShortsDemoAdapter
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    private var shortsList: List<ShortsBean>? = null
+    
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentShortsDemoBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,7 +47,8 @@ class ShortsDemoFragment : Fragment(), BaseListItemCallback<ShortsAPIResponse.Sh
                 is Resource.Success -> {
                     it.data.shorts.let {bean ->
                         mAdapter.removeAll()
-                        mAdapter.addAll(bean.asReversed())
+                        shortsList = bean.asReversed()
+                        mAdapter.addAll(shortsList!!)
                     }
                 }
 
@@ -59,6 +61,9 @@ class ShortsDemoFragment : Fragment(), BaseListItemCallback<ShortsAPIResponse.Sh
 
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
-        findNavController().navigateTo(R.id.shortsFragment, bundleOf("selectedPosition" to position))
+        shortsList?.let {
+            val playingShortsList = it.subList(position, it.size).toList()
+            findNavController().navigateTo(R.id.shortsFragment, bundleOf("shorts" to playingShortsList))
+        }
     }
 }

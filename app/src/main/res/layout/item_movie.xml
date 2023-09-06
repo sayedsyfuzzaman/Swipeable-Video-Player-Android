@@ -8,7 +8,7 @@
             type="com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback" />
         <variable
             name="data"
-            type="com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse.ShortsBean" />
+            type="com.syfuzzaman.swipeable_video_player_android.data.ShortsBean" />
         <variable
             name="position"
             type="Integer" />
