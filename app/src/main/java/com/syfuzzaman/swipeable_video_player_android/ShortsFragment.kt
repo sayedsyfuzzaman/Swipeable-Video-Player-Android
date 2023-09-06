@@ -73,4 +73,9 @@ class ShortsFragment : Fragment() {
         super.onDestroyView()
         videoPagerAdapter?.release()
     }
+
+    override fun onPause() {
+        super.onPause()
+        videoPagerAdapter?.pause()
+    }
 }

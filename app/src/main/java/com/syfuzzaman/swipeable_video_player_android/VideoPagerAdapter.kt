@@ -12,9 +12,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.Player
@@ -32,7 +30,6 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.google.android.material.button.MaterialButton
@@ -50,10 +47,11 @@ class VideoPagerAdapter(
     private val videoItems: List<ShortsAPIResponse.ShortsBean>,
 ) : RecyclerView.Adapter<VideoPagerAdapter.VideoViewHolder>() {
 
-    var player: ExoPlayer? = null
+    private var player: ExoPlayer? = null
     private var httpDataSourceFactory: OkHttpDataSource.Factory? = null
     var simpleCache: SimpleCache
-    
+    var hashMap: HashMap<Int, VideoViewHolder> = HashMap()
+
     init {
         val evict = LeastRecentlyUsedCacheEvictor((100 * 1024 * 1024).toLong())
         val databaseProvider: DatabaseProvider = StandaloneDatabaseProvider(context)
@@ -158,10 +156,13 @@ class VideoPagerAdapter(
                             Log.d("PAGE_SCROLL", "startPageScroll: video ends")
                         }
 
+                    else -> {
+                        viewModel.swipeJob.value = false
                     }
+
                 }
-            })
-        }
+            }
+        })
     }
 
     override fun onViewAttachedToWindow(holder: VideoViewHolder) {
@@ -198,9 +199,25 @@ class VideoPagerAdapter(
 
     override fun getItemCount(): Int = videoItems.size
 
-    fun release(){
+
+    /* To stop the playing videos if any on activity closing,
+    we need to get the playing position in adapter and
+    stop the player and remove player view of that view-holder.
+    */
+    fun release() {
         player?.release()
         simpleCache.release()
+
+        for (key in hashMap.keys) {
+            hashMap[key]?.binding?.videoFrame?.player?.release()
+        }
+    }
+
+    fun pause() {
+        player?.pause()
+        for (key in hashMap.keys) {
+            hashMap[key]?.binding?.videoFrame?.player?.pause()
+        }
     }
 
 }
