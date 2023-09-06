@@ -9,13 +9,16 @@
         <variable
             name="data"
             type="com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse.ShortsBean" />
+        <variable
+            name="position"
+            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/movieLayout"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:onClick="@{(view)->callback.onOpenMenu(view, data)}"
+        android:onClick="@{()->callback.onItemClick(position)}"
         android:layout_marginStart="8dp"
         >
 

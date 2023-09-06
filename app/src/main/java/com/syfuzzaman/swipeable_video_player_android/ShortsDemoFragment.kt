@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -45,7 +46,7 @@ class ShortsDemoFragment : Fragment(), BaseListItemCallback<ShortsAPIResponse.Sh
                 is Resource.Success -> {
                     it.data.shorts.let {bean ->
                         mAdapter.removeAll()
-                        mAdapter.addAll(bean)
+                        mAdapter.addAll(bean.asReversed())
                     }
                 }
 
@@ -56,8 +57,8 @@ class ShortsDemoFragment : Fragment(), BaseListItemCallback<ShortsAPIResponse.Sh
         }
     }
 
-    override fun onOpenMenu(view: View, item: ShortsAPIResponse.ShortsBean) {
-        super.onOpenMenu(view, item)
-        findNavController().navigateTo(R.id.shortsFragment)
+    override fun onItemClick(position: Int) {
+        super.onItemClick(position)
+        findNavController().navigateTo(R.id.shortsFragment, bundleOf("selectedPosition" to position))
     }
 }

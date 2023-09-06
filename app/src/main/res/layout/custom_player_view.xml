@@ -38,7 +38,7 @@
     <androidx.media3.ui.DefaultTimeBar
         android:id="@+id/exo_progress"
         android:layout_width="match_parent"
-        android:layout_height="4dp"
+        android:layout_height="2dp"
         android:layout_gravity="center"
         app:buffered_color="@color/white"
         app:played_color="@android:color/holo_red_dark"

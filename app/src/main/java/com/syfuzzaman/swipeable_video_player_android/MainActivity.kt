@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.homeFragment -> {
-                    navController.navigateTo(
+                    navController.navigatePopUpTo(
                         resId = R.id.homeFragment
                     )
                     true

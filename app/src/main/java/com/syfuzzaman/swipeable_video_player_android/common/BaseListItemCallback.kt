@@ -6,5 +6,5 @@ interface BaseListItemCallback<T: Any> {
     fun onItemClicked(item: T) {}
     fun onOpenMenu(view: View, item: T) {}
     fun onShareClicked(view: View, item: T) {}
-    fun onItemClick() {}
+    fun onItemClick(position: Int) {}
 }

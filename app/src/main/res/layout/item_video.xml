@@ -46,6 +46,7 @@
                 app:show_shuffle_button="false"
                 app:surface_type="surface_view"
                 app:use_controller="true"/>
+            
         </FrameLayout>
 
 
@@ -186,14 +187,14 @@
             android:textSize="16sp"
             android:textStyle="normal"
             android:layout_marginStart="6dp"
-            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintEnd_toStartOf="@+id/subscribeButton"
             app:layout_constraintStart_toEndOf="@id/userProfileImage"
             app:layout_constraintTop_toTopOf="@id/userProfileImage"
             app:layout_constraintBottom_toBottomOf="@id/userProfileImage"
             />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/subscribeButton"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:backgroundTint="#cc0001"

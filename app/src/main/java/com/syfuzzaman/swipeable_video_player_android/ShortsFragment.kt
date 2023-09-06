@@ -8,36 +8,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
 import com.syfuzzaman.swipeable_video_player_android.data.Resource
 import com.syfuzzaman.swipeable_video_player_android.data.observe
 import com.syfuzzaman.swipeable_video_player_android.databinding.FragmentShortsBinding
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-
 
 class ShortsFragment : Fragment() {
 
     private lateinit var binding: FragmentShortsBinding
-    private lateinit var viewPager: ViewPager2
     private var videoPagerAdapter: VideoPagerAdapter? = null
     private val viewModel by activityViewModels<MyViewModel>()
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    private var selectedPosition = 0
+    
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentShortsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPager = binding.viewPager
+        selectedPosition = arguments?.getInt("selectedPosition", 0) ?: 0
         observeShortsResponse()
         viewModel.getShortsResponse()
 
@@ -48,9 +39,8 @@ class ShortsFragment : Fragment() {
             when (it) {
                 is Resource.Success -> {
                     Log.d("ND_SHORTS", "observeShortsResponse: ${it.data.shorts}")
-                    videoPagerAdapter =
-                        VideoPagerAdapter(it.data.shorts.asReversed(), requireContext(), viewModel)
-                    viewPager.adapter = videoPagerAdapter
+                    videoPagerAdapter = VideoPagerAdapter(requireContext(), viewModel, it.data.shorts.asReversed().subList(selectedPosition, it.data.shorts.asReversed().size))
+                    binding.viewPager.adapter = videoPagerAdapter
                     scrollToNext()
                 }
 
@@ -66,8 +56,7 @@ class ShortsFragment : Fragment() {
             Log.d("PAGE_SCROLL", "startPageScroll: call")
             if (it){
                 if ((videoPagerAdapter?.itemCount ?: 0) > 0) {
-                    binding.viewPager.currentItem =
-                        (binding.viewPager.currentItem + 1) % videoPagerAdapter!!.itemCount
+                    binding.viewPager.currentItem = (binding.viewPager.currentItem + 1) % videoPagerAdapter!!.itemCount
                     Log.d("PAGE_SCROLL", "startPageScroll: scrolled")
 
                 }
