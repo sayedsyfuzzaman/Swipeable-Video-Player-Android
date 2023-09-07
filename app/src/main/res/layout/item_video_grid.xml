@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="callback"
+            type="com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback" />
+
+        <variable
+            name="data"
+            type="com.syfuzzaman.swipeable_video_player_android.data.ShortsBean" />
+
+        <variable
+            name="position"
+            type="Integer" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/movieLayout"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_margin="8dp"
+        android:onClick="@{()->callback.onItemClick(position)}">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgMoviePoster"
+            loadImageFromUrl="@{data.thumbnail}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/RoundedImageView"
+            app:srcCompat="@drawable/poster_placeholder" />
+
+        <ImageView
+            android:id="@+id/play_pause"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/ic_play_p"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_more_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginBottom="6dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{data.description}"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

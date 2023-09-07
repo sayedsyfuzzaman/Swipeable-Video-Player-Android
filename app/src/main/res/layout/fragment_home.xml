@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -35,6 +34,14 @@
             android:layout_height="wrap_content"
             tools:ignore="MissingConstraints"
             tools:layout="@layout/fragment_shorts_auto_play" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/shortsGrid"
+            android:name="com.syfuzzaman.swipeable_video_player_android.ShortsGridFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"
+            tools:layout="@layout/fragment_shorts_grid" />
     </LinearLayout>
 
 
