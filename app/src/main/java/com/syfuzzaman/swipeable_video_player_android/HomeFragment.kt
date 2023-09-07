@@ -18,7 +18,7 @@ class HomeFragment : Fragment(), BaseListItemCallback<ShortsBean> {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(layoutInflater)
         return binding.root
     }
 }

@@ -19,6 +19,12 @@ class BindingUtil {
                 scale(Scale.FILL)
             }
         }
+
+        @JvmStatic
+        @BindingAdapter(value = ["loadImageFromResource", "maintainRatio"], requireAll = false)
+        fun bindImageFromResource(view: ImageView, imageResource: Int?, maintainRatio: Boolean = true) {
+            view.setImageResource(imageResource ?: R.drawable.poster1)
+        }
     }
 
 }

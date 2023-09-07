@@ -21,7 +21,7 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/featured_image"
-            loadImageFromUrl="@{data.imageUrl}"
+            loadImageFromResource="@{data.image}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:adjustViewBounds="true"

@@ -14,6 +14,7 @@ class MyViewModel @Inject constructor(
 ) : ViewModel(){
     val shortsResponse =  SingleLiveEvent<Resource<ShortsAPIResponse>>()
     val shortsAutoPlayResponse =  SingleLiveEvent<Resource<ShortsAPIResponse>>()
+    val shortsGridResponse =  SingleLiveEvent<Resource<ShortsAPIResponse>>()
     val shortsBannerResponse =  SingleLiveEvent<Resource<ShortsAPIResponse>>()
     var featuredJob: Job? = null
     var swipeJob = MutableLiveData<Boolean>()
@@ -29,6 +30,12 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             val response = resultFromResponse { apiService.execute() }
             shortsAutoPlayResponse.value = response
+        }
+    }
+    fun getShortsGridResponse(){
+        viewModelScope.launch {
+            val response = resultFromResponse { apiService.execute() }
+            shortsGridResponse.value = response
         }
     }
 

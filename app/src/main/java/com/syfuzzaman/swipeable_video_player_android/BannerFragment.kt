@@ -51,9 +51,9 @@ class BannerFragment : Fragment() , BaseListItemCallback<Banner>{
         ) { _, _ -> }.attach()
 
         val bannerList: List<Banner> = listOf(
-            Banner("https://wallpapersmug.com/download/3840x2160/fadc0f/avengers-age-of-ultron-superhero-movie-poster.jpg"),
-            Banner("https://wallpapersmug.com/download/1600x900/6e645c/captain-marvel-movie-poster.jpg"),
-            Banner("https://e1.pxfuel.com/desktop-wallpaper/825/963/desktop-wallpaper-bollywood-and-hollywood-movie-posters-backgrounds-bollywood-poster.jpg")
+            Banner(R.drawable.poster1),
+            Banner(R.drawable.poster2),
+            Banner(R.drawable.poster3)
         )
 
         mAdapter.removeAll()
