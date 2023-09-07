@@ -22,8 +22,8 @@ import com.syfuzzaman.swipeable_video_player_android.databinding.FragmentShortsA
 class ShortsAutoPlayFragment : Fragment(), BaseListItemCallback<ShortsBean> {
     private lateinit var binding: FragmentShortsAutoPlayBinding
     private val viewModel by activityViewModels<MyViewModel>()
+    private val homeViewModel by activityViewModels<HomeViewModel>()
     private lateinit var mAdapter: ShortsAutoPlayAdapter
-    private var shortsList: List<ShortsBean>? = null
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentShortsAutoPlayBinding.inflate(inflater, container, false)
@@ -36,8 +36,13 @@ class ShortsAutoPlayFragment : Fragment(), BaseListItemCallback<ShortsBean> {
         with(binding.rvShortsAutoPlay) {
             adapter = mAdapter
         }
-        observeShortsResponse()
-        viewModel.getShortsAutoPlayResponse()
+        if (homeViewModel.autoPlayShorts.value?.isNotEmpty() == true) {
+            mAdapter.removeAll()
+            mAdapter.addAll(homeViewModel.autoPlayShorts.value!!)
+        } else {
+            observeShortsResponse()
+            viewModel.getShortsAutoPlayResponse()
+        }
     }
 
     private fun observeShortsResponse() {
@@ -46,8 +51,8 @@ class ShortsAutoPlayFragment : Fragment(), BaseListItemCallback<ShortsBean> {
                 is Resource.Success -> {
                     it.data.shorts.let {bean ->
                         mAdapter.removeAll()
-                        shortsList = bean.shuffled()
-                        mAdapter.addAll(shortsList!!)
+                        homeViewModel.autoPlayShorts.value = bean.shuffled()
+                        mAdapter.addAll(homeViewModel.autoPlayShorts.value!!)
                     }
                 }
 
@@ -60,7 +65,7 @@ class ShortsAutoPlayFragment : Fragment(), BaseListItemCallback<ShortsBean> {
 
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
-        shortsList?.let {
+        homeViewModel.autoPlayShorts.value?.let {
             val playingShortsList = it.subList(position, it.size).toMutableList()
             if (position > 0){
                 playingShortsList.addAll(it.subList(0, position))
