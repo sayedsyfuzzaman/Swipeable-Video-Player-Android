@@ -61,7 +61,10 @@ class ShortsAutoPlayFragment : Fragment(), BaseListItemCallback<ShortsBean> {
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
         shortsList?.let {
-            val playingShortsList = it.subList(position, it.size).toList()
+            val playingShortsList = it.subList(position, it.size).toMutableList()
+            if (position > 0){
+                playingShortsList.addAll(it.subList(0, position))
+            }
             findNavController().navigateTo(resId = R.id.shortsFragment, args = bundleOf("shorts" to playingShortsList))
         }
     }

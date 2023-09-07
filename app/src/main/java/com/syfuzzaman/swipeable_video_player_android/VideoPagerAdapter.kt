@@ -174,10 +174,9 @@ class VideoPagerAdapter(
                 override fun onPlaybackStateChanged(playbackState: Int) {
                     when (playbackState) {
                         Player.STATE_ENDED -> {
-                            viewModel.swipeJob.value = true
+                            viewModel.swipeJob.value = holder.bindingAdapterPosition < videoItems.size-1
                             Log.d("PAGE_SCROLL", "startPageScroll: video ends")
                         }
-
                         else -> {
                             viewModel.swipeJob.value = false
                         }

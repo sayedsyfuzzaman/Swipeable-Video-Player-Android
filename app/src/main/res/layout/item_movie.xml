@@ -19,7 +19,7 @@
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:onClick="@{()->callback.onItemClick(position)}"
-        android:layout_marginStart="8dp"
+        android:layout_margin="8dp"
         >
 
 

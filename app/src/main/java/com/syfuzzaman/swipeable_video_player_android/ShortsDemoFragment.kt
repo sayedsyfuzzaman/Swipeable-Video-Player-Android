@@ -1,6 +1,7 @@
 package com.syfuzzaman.swipeable_video_player_android
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -62,8 +63,13 @@ class ShortsDemoFragment : Fragment(), BaseListItemCallback<ShortsBean> {
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
         shortsList?.let {
-            val playingShortsList = it.subList(position, it.size).toList()
+            val playingShortsList = it.subList(position, it.size).toMutableList()
+            Log.d("last_item_play_issue", "onItemClick: $playingShortsList")
+            if (position > 0){
+                playingShortsList.addAll(it.subList(0, position))
+            }
             findNavController().navigateTo(R.id.shortsFragment, bundleOf("shorts" to playingShortsList))
         }
+
     }
 }

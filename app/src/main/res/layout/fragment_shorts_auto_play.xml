@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ShortsAutoPlayFragment">
 
@@ -28,7 +28,7 @@
         android:layout_marginStart="4dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Shorts Demo Auto Play"
+        android:text="Shorts (Large Thumbnail)"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -55,7 +55,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:paddingBottom="?actionBarSize"
+        android:paddingBottom="8dp"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintVertical_bias="0"
         tools:visibility="visible"

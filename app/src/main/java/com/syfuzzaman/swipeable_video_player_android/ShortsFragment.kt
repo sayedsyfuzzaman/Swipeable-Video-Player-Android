@@ -33,11 +33,21 @@ class ShortsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        selectedPosition = arguments?.getInt("selectedPosition", 0) ?: 0
         shortsList = arguments?.getParcelableArrayList("shorts")
+
+        Log.d("last_item_play_issue", "onViewCreated: $shortsList")
+
         shortsList?.let { 
             loadAdapter(it)
         } ?: run {
             observeShortsResponse()
             viewModel.getShortsResponse()
+        }
+
+        binding.menu.setOnClickListener {
+            Toast.makeText(requireContext(), "Action Required!", Toast.LENGTH_SHORT).show()
+        }
+        binding.search.setOnClickListener {
+            Toast.makeText(requireContext(), "Action Required!", Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -82,11 +92,9 @@ class ShortsFragment : Fragment() {
                 if ((videoPagerAdapter?.itemCount ?: 0) > 0) {
                     binding.viewPager.currentItem = (binding.viewPager.currentItem + 1) % videoPagerAdapter!!.itemCount
                     Log.d("PAGE_SCROLL", "startPageScroll: scrolled")
-
                 }
             }
         }
-
     }
 
     override fun onDestroy() {
