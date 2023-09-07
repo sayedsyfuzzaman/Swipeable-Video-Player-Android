@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.media3.common.MediaItem
@@ -47,6 +48,7 @@ class VideoPagerAdapter(
     private var httpDataSourceFactory: OkHttpDataSource.Factory? = null
     var simpleCache: SimpleCache
     var hashMap: HashMap<Int, VideoViewHolder> = HashMap()
+    var exoBuffering: ProgressBar? = null
 
     private val newList: List<ShortsBean> =
         listOf(videoItems.last()) + videoItems + listOf(videoItems.first())
@@ -78,6 +80,7 @@ class VideoPagerAdapter(
             val videoElement = newList[position+1]
             val playPauseButton = videoFrame.findViewById<ImageView>(R.id.play_pause)
             val progressBar = videoFrame.findViewById<DefaultTimeBar>(R.id.exo_progress)
+            exoBuffering = videoFrame.findViewById<ProgressBar>(R.id.exo_buffering)
             
             description.text = videoElement.description
             userName.text = videoElement.channelName
@@ -172,10 +175,16 @@ class VideoPagerAdapter(
                 override fun onPlaybackStateChanged(playbackState: Int) {
                     when (playbackState) {
                         Player.STATE_ENDED -> {
+                            exoBuffering?.visibility = View.GONE
                             viewModel.swipeJob.value = holder.bindingAdapterPosition < videoItems.size-1
                             Log.d("PAGE_SCROLL", "startPageScroll: video ends")
                         }
+                        Player.STATE_BUFFERING -> {
+                            exoBuffering?.visibility = View.VISIBLE
+                            viewModel.swipeJob.value = false
+                        }
                         else -> {
+                            exoBuffering?.visibility = View.GONE
                             viewModel.swipeJob.value = false
                         }
 
