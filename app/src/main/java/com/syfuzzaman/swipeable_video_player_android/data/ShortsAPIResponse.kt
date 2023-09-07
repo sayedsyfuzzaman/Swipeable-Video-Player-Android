@@ -21,7 +21,7 @@ data class ShortsBean (
     @SerializedName("thumbnail"       ) var thumbnail       : String?    = null,
     @SerializedName("mediaUrl"        ) var mediaUrl        : String?    = null,
     @SerializedName("tags"            ) var tags            : String?    = null,
-    @SerializedName("reactions"       ) var reactions       : @RawValue Reactions? = Reactions(),
+//    @SerializedName("reactions"       ) var reactions       : @RawValue Reactions? = null,
     @SerializedName("channelName"     ) var channelName     : String?    = null,
     @SerializedName("channelPhotoUrl" ) var channelPhotoUrl : String?    = null,
     @SerializedName("shareUrl"        ) var shareUrl        : String?    = null,

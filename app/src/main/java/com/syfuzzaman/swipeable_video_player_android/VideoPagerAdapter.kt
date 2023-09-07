@@ -3,13 +3,9 @@ package com.syfuzzaman.swipeable_video_player_android
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import android.view.GestureDetector
-import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.Toast
@@ -17,7 +13,6 @@ import androidx.core.view.isVisible
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.Player
-import androidx.media3.common.Player.RepeatMode
 import androidx.media3.database.DatabaseProvider
 import androidx.media3.database.StandaloneDatabaseProvider
 import androidx.media3.datasource.DefaultDataSourceFactory
@@ -35,12 +30,11 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
-import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
 import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
 import com.syfuzzaman.swipeable_video_player_android.databinding.ItemVideoBinding
 import okhttp3.OkHttpClient
 import java.io.File
-
+import kotlin.random.Random
 
 @SuppressLint("UnsafeOptInUsageError")
 class VideoPagerAdapter(
@@ -83,8 +77,8 @@ class VideoPagerAdapter(
             
             description.text = videoElement.description
             userName.text = videoElement.channelName
-            likeCount.text = videoElement.reactions?.likes.toString() ?: ""
-            dislikeCount.text = videoElement.reactions?.dislikes.toString() ?: ""
+            likeCount.text = Random.nextInt(100, 1000).toString() //videoElement.reactions?.likes.toString() ?: ""
+            dislikeCount.text = Random.nextInt(100, 1000).toString() //videoElement.reactions?.dislikes.toString() ?: ""
             tags.text = videoElement.tags.toString()
 
             userProfileImage.load(videoElement.channelPhotoUrl) {

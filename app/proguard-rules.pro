@@ -39,23 +39,15 @@
 
 #-keep class com.banglalink.toffee.ui.common** { *; }
 
-#-keepnames public class * extends androidx.fragment.app.Fragment
+-keepnames public class * extends androidx.fragment.app.Fragment
 -keepnames public class * extends com.google.android.material.appbar.AppBarLayout.*
--keep class com.banglalink.toffee.ui.widget.AppBarLayoutBehavior {
-    public <methods>;
-}
+
 -keepnames abstract class com.google.android.material.appbar.HeaderBehavior
 -keepclassmembers class com.google.android.material.appbar.HeaderBehavior {
     private java.lang.Runnable flingRunnable;
     android.widget.OverScroller scroller;
 }
 #-keep class androidx.navigation** { *; }
-
--keep class androidx.mediarouter.app.MediaRouteActionProvider {*;}
--keepnames class androidx.media3.cast.CastPlayer$StatusListener
--keepclassmembers class androidx.media3.cast.CastPlayer {
-    private androidx.media3.cast.CastPlayer$StatusListener statusListener;
-}
 
 #-keep class com.google.android.exoplayer2** { *; }
 #-keep class com.loopnow.fireworklibrary** { *; }
@@ -70,19 +62,12 @@
 
 -keep class * extends java.util.ListResourceBundle { *; }
 
--keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
-    public static final *** NULL;
-}
-
--keepnames @com.google.android.gms.common.annotation.KeepName class *
--keepclassmembernames class * {
-    @com.google.android.gms.common.annotation.KeepName *;
-}
-
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
-
+-keepclassmembers class * implements android.os.Parcelable {
+    static ** CREATOR;
+}
 -keep class com.medallia.** { *; } 
 -dontwarn com.medallia.**
 -keep class com.conviva.** { *; }
@@ -110,15 +95,6 @@
 
 -keepattributes InnerClasses -keep class **.R -keep class **.R$* { <fields>; }
 -keepnames @dagger.hilt.android.lifecycle.HiltViewModel class * extends androidx.lifecycle.ViewModel
-
--dontwarn com.beloo.widget.chipslayoutmanager.Orientation
--dontwarn com.google.protobuf.java_com_google_ads_interactivemedia_v3__sdk_1p_binary_b0308732GeneratedExtensionRegistryLite$Loader
-
--keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
--keep class * extends com.google.protobuf.GeneratedMessageInfoFactory { *; }
--keep,allowobfuscation class * extends com.google.protobuf.GeneratedMessageLite { *; }
--assumevalues class com.google.protobuf.Android { static boolean ASSUME_ANDROID return true; }
--dontwarn com.google.protobuf.java_com_google_android_gmscore_sdk_target_granule__proguard_group_gtm_N1281923064GeneratedExtensionRegistryLite**
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
 -dontwarn com.google.android.exoplayer2.ExoPlayer

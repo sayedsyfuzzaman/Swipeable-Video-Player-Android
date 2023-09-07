@@ -1,35 +1,24 @@
 package com.syfuzzaman.swipeable_video_player_android
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
-import com.syfuzzaman.swipeable_video_player_android.data.Resource
 import com.syfuzzaman.swipeable_video_player_android.data.navigatePopUpTo
 import com.syfuzzaman.swipeable_video_player_android.data.navigateTo
-import com.syfuzzaman.swipeable_video_player_android.data.observe
 import com.syfuzzaman.swipeable_video_player_android.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-import kotlin.math.log
 
 @UnstableApi
 @AndroidEntryPoint
@@ -37,13 +26,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var navHostFragment: NavHostFragment
+    private val viewModel by viewModels<HomeViewModel>()
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
+        viewModel.autoPlayShorts.value = null
         val date = Date(123, 8, 9)
 
         if (bdTime() >= date) {
