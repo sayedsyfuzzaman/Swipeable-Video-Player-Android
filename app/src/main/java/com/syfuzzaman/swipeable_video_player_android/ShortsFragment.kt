@@ -87,8 +87,6 @@ class ShortsFragment : Fragment() {
     }
 
     private fun loadAdapter(shorts: List<ShortsBean>) {
-        binding.viewPager.currentItem = 1
-
         videoPagerAdapter = VideoPagerAdapter(
             requireContext(),
             viewModel,
@@ -96,6 +94,7 @@ class ShortsFragment : Fragment() {
         )
         binding.viewPager.registerOnPageChangeCallback(viewPagerPageChangedCallback(shorts.size+2))
         binding.viewPager.adapter = videoPagerAdapter
+        binding.viewPager.currentItem = 0
         scrollToNext()
     }
 

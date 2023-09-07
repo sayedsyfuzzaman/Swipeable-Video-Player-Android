@@ -75,7 +75,15 @@ class VideoPagerAdapter(
 
             hashMap.put(position, holder)
 
-            val videoElement = newList[position+1]
+            var videoElement = ShortsBean()
+
+            Log.d("crash_issue_infscroll", "bindpos: ${holder.bindingAdapterPosition}, size: ${newList.size}")
+            if ((holder.bindingAdapterPosition) == newList.size-1){
+                videoElement = newList[0]
+            }else{
+                videoElement = newList[holder.bindingAdapterPosition+1]
+            }
+
             val playPauseButton = videoFrame.findViewById<ImageView>(R.id.play_pause)
             val progressBar = videoFrame.findViewById<DefaultTimeBar>(R.id.exo_progress)
             
