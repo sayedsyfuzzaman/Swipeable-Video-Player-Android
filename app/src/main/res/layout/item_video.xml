@@ -38,7 +38,7 @@
                 android:keepScreenOn="true"
                 app:controller_layout_id="@layout/custom_player_view"
                 app:resize_mode="zoom"
-                app:show_buffering="when_playing"
+                app:show_buffering="always"
                 app:show_shuffle_button="false"
                 app:surface_type="surface_view"
                 app:hide_on_touch="false"
