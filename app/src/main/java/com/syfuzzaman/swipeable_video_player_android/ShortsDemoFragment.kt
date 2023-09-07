@@ -64,7 +64,8 @@ class ShortsDemoFragment : Fragment(), BaseListItemCallback<ShortsBean> {
         super.onItemClick(position)
         shortsList?.let {
             val playingShortsList = it.subList(position, it.size).toMutableList()
-            Log.d("last_item_play_issue", "onItemClick: $playingShortsList")
+            Log.d("item_play_issue", "position: $position  size: ${it.size}")
+            Log.d("item_play_issue", "onItemClick: $playingShortsList")
             if (position > 0){
                 playingShortsList.addAll(it.subList(0, position))
             }

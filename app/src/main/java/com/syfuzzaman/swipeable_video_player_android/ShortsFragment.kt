@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
 import com.syfuzzaman.swipeable_video_player_android.data.Resource
@@ -52,10 +53,21 @@ class ShortsFragment : Fragment() {
 
     }
 
-    private val viewPagerPageChangedCallback = object : OnPageChangeCallback() {
+    private fun viewPagerPageChangedCallback(listSize: Int) = object : OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
             videoPagerAdapter?.startPlaying(position)
+        }
+
+        override fun onPageScrollStateChanged(state: Int) {
+            super.onPageScrollStateChanged(state)
+
+            if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                when (binding.viewPager.currentItem) {
+                    listSize - 1 -> binding.viewPager.setCurrentItem(1, false)
+                    0 -> binding.viewPager.setCurrentItem(listSize - 2, false)
+                }
+            }
         }
     }
     
@@ -75,12 +87,14 @@ class ShortsFragment : Fragment() {
     }
 
     private fun loadAdapter(shorts: List<ShortsBean>) {
+        binding.viewPager.currentItem = 1
+
         videoPagerAdapter = VideoPagerAdapter(
             requireContext(),
             viewModel,
             shorts
         )
-        binding.viewPager.registerOnPageChangeCallback(viewPagerPageChangedCallback)
+        binding.viewPager.registerOnPageChangeCallback(viewPagerPageChangedCallback(shorts.size+2))
         binding.viewPager.adapter = videoPagerAdapter
         scrollToNext()
     }
@@ -100,7 +114,7 @@ class ShortsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         videoPagerAdapter?.release()
-        binding.viewPager.unregisterOnPageChangeCallback(viewPagerPageChangedCallback)
+        binding.viewPager.unregisterOnPageChangeCallback(viewPagerPageChangedCallback(0))
     }
     override fun onDestroyView() {
         super.onDestroyView()

@@ -54,6 +54,9 @@ class VideoPagerAdapter(
     var simpleCache: SimpleCache
     var hashMap: HashMap<Int, VideoViewHolder> = HashMap()
 
+    private val newList: List<ShortsBean> =
+        listOf(videoItems.last()) + videoItems + listOf(videoItems.first())
+
     init {
         val evict = LeastRecentlyUsedCacheEvictor((100 * 1024 * 1024).toLong())
         val databaseProvider: DatabaseProvider = StandaloneDatabaseProvider(context)
@@ -73,11 +76,12 @@ class VideoPagerAdapter(
     @SuppressLint("UnsafeOptInUsageError")
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         with(holder.binding) {
-            Log.d("nd_shorts", "Binding position: $position")
+            Log.d("item_play_issue", "Binding position: $position")
+            Log.d("item_play_issue", "onBindViewHolder: $newList")
 
             hashMap.put(position, holder)
 
-            val videoElement = videoItems[position]
+            val videoElement = newList[position+1]
             val playPauseButton = videoFrame.findViewById<ImageView>(R.id.play_pause)
             val progressBar = videoFrame.findViewById<DefaultTimeBar>(R.id.exo_progress)
             
@@ -212,7 +216,7 @@ class VideoPagerAdapter(
         simpleCache.release()
     }
 
-    override fun getItemCount(): Int = videoItems.size
+    override fun getItemCount(): Int = newList.size
 
     fun startPlaying(position: Int) {
         pause()
