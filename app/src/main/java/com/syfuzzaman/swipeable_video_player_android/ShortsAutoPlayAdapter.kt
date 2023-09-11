@@ -10,6 +10,6 @@ class ShortsAutoPlayAdapter(
     cb: BaseListItemCallback<ShortsBean>
 ): MyBaseAdapter<ShortsBean>(cb){
     override fun getLayoutIdForPosition(position: Int): Int {
-        return R.layout.item_movie_vertical
+        return R.layout.item_video_autoplay
     }
 }

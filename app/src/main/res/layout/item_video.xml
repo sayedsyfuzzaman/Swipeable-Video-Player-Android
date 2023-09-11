@@ -10,7 +10,7 @@
 
         <variable
             name="data"
-            type="com.syfuzzaman.swipeable_video_player_android.VideoBean" />
+            type="com.syfuzzaman.swipeable_video_player_android.data.ShortsBean" />
     </data>
     
     <androidx.constraintlayout.widget.ConstraintLayout

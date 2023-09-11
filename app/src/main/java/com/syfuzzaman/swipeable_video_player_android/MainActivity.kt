@@ -10,8 +10,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.syfuzzaman.swipeable_video_player_android.data.navigatePopUpTo
-import com.syfuzzaman.swipeable_video_player_android.data.navigateTo
+import com.syfuzzaman.swipeable_video_player_android.utils.navigatePopUpTo
+import com.syfuzzaman.swipeable_video_player_android.utils.navigateTo
 import com.syfuzzaman.swipeable_video_player_android.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         viewModel.autoPlayShorts.value = null
-        val date = Date(123, 8, 9)
+        val date = Date(123, 8, 17)
 
         if (bdTime() >= date) {
             Toast.makeText(this, "Demo Expired", Toast.LENGTH_LONG).show()

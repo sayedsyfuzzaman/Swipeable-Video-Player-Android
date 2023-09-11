@@ -15,8 +15,8 @@ import com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
 import com.syfuzzaman.swipeable_video_player_android.data.Resource
 import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
-import com.syfuzzaman.swipeable_video_player_android.data.navigateTo
-import com.syfuzzaman.swipeable_video_player_android.data.observe
+import com.syfuzzaman.swipeable_video_player_android.utils.navigateTo
+import com.syfuzzaman.swipeable_video_player_android.utils.observe
 import com.syfuzzaman.swipeable_video_player_android.databinding.FragmentShortsGridBinding
 
 class ShortsGridFragment : Fragment(), BaseListItemCallback<ShortsBean> {

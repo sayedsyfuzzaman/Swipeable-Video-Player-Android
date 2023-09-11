@@ -1,8 +1,10 @@
-package com.syfuzzaman.swipeable_video_player_android.data
+package com.syfuzzaman.swipeable_video_player_android.utils
 
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -10,12 +12,16 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import com.syfuzzaman.swipeable_video_player_android.data.ApiException
+import com.syfuzzaman.swipeable_video_player_android.data.Error
+import com.syfuzzaman.swipeable_video_player_android.data.Resource
+import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.util.concurrent.CancellationException
 
-suspend fun <T :  ShortsAPIResponse> tryIO(block: suspend () -> T): T {
+suspend fun <T : ShortsAPIResponse> tryIO(block: suspend () -> T): T {
     val response = block()
     return when{
         response.success != true ->{
@@ -102,4 +108,8 @@ fun NavController.navigatePopUpTo(
             }
         }
     })
+}
+
+fun Context.toast(text: String){
+    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 }

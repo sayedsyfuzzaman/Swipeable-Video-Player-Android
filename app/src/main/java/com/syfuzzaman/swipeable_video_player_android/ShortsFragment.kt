@@ -12,9 +12,8 @@ import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
 import com.syfuzzaman.swipeable_video_player_android.data.Resource
-import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
 import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
-import com.syfuzzaman.swipeable_video_player_android.data.observe
+import com.syfuzzaman.swipeable_video_player_android.utils.observe
 import com.syfuzzaman.swipeable_video_player_android.databinding.FragmentShortsBinding
 
 class ShortsFragment : Fragment() {

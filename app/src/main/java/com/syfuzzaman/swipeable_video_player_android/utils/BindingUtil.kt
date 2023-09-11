@@ -1,4 +1,4 @@
-package com.syfuzzaman.swipeable_video_player_android.data
+package com.syfuzzaman.swipeable_video_player_android.utils
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -24,6 +24,17 @@ class BindingUtil {
         @BindingAdapter(value = ["loadImageFromResource", "maintainRatio"], requireAll = false)
         fun bindImageFromResource(view: ImageView, imageResource: Int?, maintainRatio: Boolean = true) {
             view.setImageResource(imageResource ?: R.drawable.poster1)
+        }
+
+        @JvmStatic
+        @BindingAdapter(value = ["thumbnail", "error"], requireAll = false)
+        fun loadImage(view: ImageView, imageUrl: String?, error: Int) {
+            if (!imageUrl.isNullOrEmpty())
+                view.load(imageUrl){
+                    crossfade(true)
+                    placeholder(R.drawable.poster_placeholder)
+                    scale(Scale.FILL)
+                }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.syfuzzaman.swipeable_video_player_android.data
+package com.syfuzzaman.swipeable_video_player_android.utils
 import android.util.Log
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner

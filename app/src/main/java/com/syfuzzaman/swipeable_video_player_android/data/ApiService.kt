@@ -1,5 +1,6 @@
 package com.syfuzzaman.swipeable_video_player_android.data
 
+import com.syfuzzaman.swipeable_video_player_android.utils.tryIO
 import javax.inject.Inject
 import kotlin.random.Random
 
