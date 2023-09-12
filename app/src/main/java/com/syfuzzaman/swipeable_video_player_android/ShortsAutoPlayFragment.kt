@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.syfuzzaman.swipeable_video_player_android.auto_play.AutoPlayAdapter
+import com.syfuzzaman.swipeable_video_player_android.auto_play.PlayerViewBindingAdapter.Companion.pauseAllPlayers
 import com.syfuzzaman.swipeable_video_player_android.auto_play.PlayerViewBindingAdapter.Companion.playIndexThenPausePreviousPlayer
 import com.syfuzzaman.swipeable_video_player_android.auto_play.PlayerViewBindingAdapter.Companion.releaseAllPlayers
 import com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback
@@ -28,9 +29,6 @@ class ShortsAutoPlayFragment : Fragment(), BaseListItemCallback<ShortsBean> {
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private lateinit var mAdapter: AutoPlayAdapter
 
-    private var firstVisibleItem = 0
-    private var visibleItemCount = 0
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentShortsAutoPlayBinding.inflate(inflater, container, false)
         return binding.root
@@ -44,18 +42,18 @@ class ShortsAutoPlayFragment : Fragment(), BaseListItemCallback<ShortsBean> {
             setHasFixedSize(true)
         }
 
-
-
         binding.rvShortsAutoPlay.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 when(recyclerView.scrollState){
                     RecyclerView.SCROLL_STATE_IDLE ->{
+
+                        // getting first visible item in recycler view
                         val manager = recyclerView.layoutManager
                         require(manager is LinearLayoutManager) { "Expected recyclerview to have linear layout manager" }
                         val mLayoutManager = manager
-                        visibleItemCount = mLayoutManager.childCount
-                        firstVisibleItem = mLayoutManager.findFirstCompletelyVisibleItemPosition()
+                        // var visibleItemCount = mLayoutManager.childCount
+                        val firstVisibleItem = mLayoutManager.findFirstCompletelyVisibleItemPosition()
                         if (firstVisibleItem!=0){
                             playIndexThenPausePreviousPlayer(firstVisibleItem)
                         }
@@ -95,7 +93,6 @@ class ShortsAutoPlayFragment : Fragment(), BaseListItemCallback<ShortsBean> {
                         mAdapter.addAll(homeViewModel.autoPlayShorts.value!!)
                     }
                 }
-
                 is Resource.Failure -> {
                     Toast.makeText(requireContext(), it.error.msg, Toast.LENGTH_SHORT).show()
                 }
@@ -105,6 +102,11 @@ class ShortsAutoPlayFragment : Fragment(), BaseListItemCallback<ShortsBean> {
 
     override fun onPause() {
         super.onPause()
+        pauseAllPlayers()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         releaseAllPlayers()
     }
 }

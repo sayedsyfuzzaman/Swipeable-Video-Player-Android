@@ -16,19 +16,25 @@ import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.ui.PlayerView
+import com.syfuzzaman.swipeable_video_player_android.R
 import com.syfuzzaman.swipeable_video_player_android.common.PlayerStateCallback
 import okhttp3.OkHttpClient
 
 class PlayerViewBindingAdapter{
 
     companion object{
-        // to hold all generated players
-        private var playersMap: MutableMap<Int, ExoPlayer>  = mutableMapOf()
-        // to hold current player
+        private var playersMap: HashMap <Int, ExoPlayer>  = hashMapOf()
         private var currentPlayingVideo: Pair<Int, ExoPlayer>? = null
+
         fun releaseAllPlayers(){
             playersMap.map {
                 it.value.release()
+            }
+        }
+
+        fun pauseAllPlayers(){
+            playersMap.map {
+                it.value.pause()
             }
         }
 
@@ -56,8 +62,8 @@ class PlayerViewBindingAdapter{
 
         @JvmStatic
         @SuppressLint("UnsafeOptInUsageError")
-        @BindingAdapter(value = ["video_url", "on_state_change", "progressbar", "thumbnail", "item_index", "autoPlay"], requireAll = false)
-        fun PlayerView.loadVideo(url: String, callback: PlayerStateCallback, progressbar: ProgressBar, thumbnail: ImageView, item_index: Int? = null, autoPlay: Boolean = false) {
+        @BindingAdapter(value = ["video_url", "on_state_change", "progressbar", "thumbnail", "item_index", "autoPlay", "volumeControl"], requireAll = false)
+        fun PlayerView.loadVideo(url: String, callback: PlayerStateCallback, progressbar: ProgressBar, thumbnail: ImageView, item_index: Int? = null, autoPlay: Boolean = false, volumeControl : ImageView) {
 
             val player: ExoPlayer?
             val httpDataSourceFactory: OkHttpDataSource.Factory?
@@ -107,13 +113,14 @@ class PlayerViewBindingAdapter{
                     (this.player as ExoPlayer).volume = 0f
                     this.useController = false
                 }
+
             // add player with its index to map
             if (playersMap.containsKey(item_index))
                 playersMap.remove(item_index)
             if (item_index != null)
                 playersMap[item_index] = player
 
-            // Set an event listener to detect when the video playback ends
+
             player.addListener(object : Player.Listener {
                 override fun onPlaybackStateChanged(playbackState: Int) {
                     if (playbackState == ExoPlayer.STATE_BUFFERING) {
@@ -131,9 +138,14 @@ class PlayerViewBindingAdapter{
                         // started playing/resumed the video
                         callback.onStartedPlaying(player)
                     }
+                    if(playbackState == Player.STATE_ENDED || playbackState == Player.STATE_IDLE){
+                        progressbar.visibility = View.GONE
+                        thumbnail.visibility = View.VISIBLE
+                    }
                 }
             })
 
+            // playing first item forcefully for the first time
             if (item_index == 0){
                 playIndexThenPausePreviousPlayer(0)
             }

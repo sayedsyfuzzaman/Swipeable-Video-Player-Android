@@ -15,7 +15,6 @@ import com.syfuzzaman.swipeable_video_player_android.auto_play.PlayerViewBinding
 import com.syfuzzaman.swipeable_video_player_android.common.PlayerStateCallback
 import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
 import com.syfuzzaman.swipeable_video_player_android.databinding.ItemVideoAutoplayBinding
-import com.syfuzzaman.swipeable_video_player_android.utils.toast
 
 class AutoPlayAdapter(
     private val mContext: Context
@@ -25,41 +24,20 @@ class AutoPlayAdapter(
 
     private var mItemClickListener: OnItemClickListener? = null
 
-    fun updateList(modelList: MutableList<ShortsBean>) {
-        this.modelList = modelList
-        notifyDataSetChanged()
-    }
-
-    override fun onCreateViewHolder(
-        viewGroup: ViewGroup,
-        viewType: Int
-    ): VideoPlayerViewHolder {
-        val binding: ItemVideoAutoplayBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(viewGroup.context),
-            R.layout.item_video_autoplay,
-            viewGroup,
-            false
-        )
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): VideoPlayerViewHolder {
+        val binding: ItemVideoAutoplayBinding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.context), R.layout.item_video_autoplay, viewGroup, false)
         return VideoPlayerViewHolder(binding)
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int
-    ) {
-
-        //Here you can fill your row view
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is VideoPlayerViewHolder) {
             val model = getItem(position)
-            val genericViewHolder = holder
-
-            // send data to view holder
-            genericViewHolder.onBind(model)
+            holder.onBind(model)
         }
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        val position = holder.adapterPosition
+        val position = holder.bindingAdapterPosition
         releaseRecycledPlayers(position)
         super.onViewRecycled(holder)
     }
@@ -77,40 +55,47 @@ class AutoPlayAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(
-            view: View?,
-            position: Int,
-            model: ShortsBean?
-        )
+        fun onItemClick(view: View?, position: Int, model: ShortsBean?)
     }
 
-    inner class VideoPlayerViewHolder(private val binding: ItemVideoAutoplayBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
+    inner class VideoPlayerViewHolder(private val binding: ItemVideoAutoplayBinding) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(model: ShortsBean) {
-            // handel on item click
             binding.root.setOnClickListener {
                 mItemClickListener!!.onItemClick(
                     it,
-                    adapterPosition,
+                    bindingAdapterPosition,
                     model
                 )
             }
 
-            binding.root.findViewById<ImageView>(R.id.volume_control).setOnClickListener {
-                binding.root.findViewById<PlayerView>(R.id.item_video_exoplayer).player?.volume = 1f
-                mContext.toast("clicked")
+            binding.root.findViewById<ImageView>(R.id.volumeControl).setOnClickListener {
+                val player = binding.root.findViewById<PlayerView>(R.id.item_video_exoplayer).player
+                if (player?.volume == 0f){
+                    player.volume = 1f
+                    binding.root.findViewById<ImageView>(R.id.volumeControl).setImageResource(R.drawable.ic_unmute)
+                }
+                else{
+                    player?.volume = 0f
+                    binding.root.findViewById<ImageView>(R.id.volumeControl).setImageResource(R.drawable.ic_mute)
+                }
             }
 
             binding.apply {
                 data = model
                 playerCallback = this@AutoPlayAdapter
-                index = adapterPosition
+                index = bindingAdapterPosition
                 executePendingBindings()
             }
 
 
         }
+    }
+
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        val player = holder.itemView.findViewById<PlayerView>(R.id.item_video_exoplayer).player
+        player?.volume = 0f
+        holder.itemView.findViewById<ImageView>(R.id.volumeControl).setImageResource(R.drawable.ic_mute)
     }
 
     override fun onVideoDurationRetrieved(duration: Long, player: Player) {
@@ -129,6 +114,11 @@ class AutoPlayAdapter(
     }
     fun removeAll()  {
         modelList.clear()
+        notifyDataSetChanged()
+    }
+
+    fun updateList(modelList: MutableList<ShortsBean>) {
+        this.modelList = modelList
         notifyDataSetChanged()
     }
 }
