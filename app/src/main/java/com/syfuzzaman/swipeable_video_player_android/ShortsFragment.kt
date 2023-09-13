@@ -75,7 +75,7 @@ class ShortsFragment : Fragment() {
             when (it) {
                 is Resource.Success -> {
                     Log.d("ND_SHORTS", "observeShortsResponse: ${it.data.shorts}")
-                    loadAdapter(it.data.shorts.asReversed())
+                    loadAdapter(it.data.shorts)
                 }
 
                 is Resource.Failure -> {
@@ -89,7 +89,8 @@ class ShortsFragment : Fragment() {
         videoPagerAdapter = VideoPagerAdapter(
             requireContext(),
             viewModel,
-            shorts
+            shorts,
+            this
         )
         binding.viewPager.registerOnPageChangeCallback(viewPagerPageChangedCallback(shorts.size+2))
         binding.viewPager.adapter = videoPagerAdapter
@@ -126,6 +127,6 @@ class ShortsFragment : Fragment() {
     
     override fun onPause() {
         super.onPause()
-        videoPagerAdapter?.pause()
+        videoPagerAdapter?.pause(binding.viewPager.currentItem)
     }
 }

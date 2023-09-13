@@ -17,6 +17,7 @@ data class Reactions (
 
 @Parcelize
 data class ShortsBean (
+    @SerializedName("id"              ) var id              : Int?       = null,
     @SerializedName("description"     ) var description     : String?    = null,
     @SerializedName("thumbnail"       ) var thumbnail       : String?    = null,
     @SerializedName("mediaUrl"        ) var mediaUrl        : String?    = null,

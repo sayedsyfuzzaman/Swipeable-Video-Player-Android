@@ -23,8 +23,8 @@ android {
 
     buildTypes {
         debug { 
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -103,4 +103,12 @@ dependencies {
     //Hilt
     implementation ("com.google.dagger:hilt-android:2.44")
     kapt ("com.google.dagger:hilt-compiler:2.44")
+
+    // Room DB
+    val room_version = "2.5.2"
+    implementation ("androidx.room:room-runtime:$room_version")
+    implementation ("androidx.room:room-ktx:$room_version")
+    //noinspection KaptUsageInsteadOfKsp
+    kapt ("androidx.room:room-compiler:$room_version")
+    implementation ("androidx.room:room-paging:$room_version")
 }
