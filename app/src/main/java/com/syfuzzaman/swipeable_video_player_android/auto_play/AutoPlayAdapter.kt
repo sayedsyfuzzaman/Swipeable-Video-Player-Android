@@ -1,23 +1,26 @@
 package com.syfuzzaman.swipeable_video_player_android.auto_play
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
 import androidx.media3.common.Player
 import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.RecyclerView
 import com.syfuzzaman.swipeable_video_player_android.R
 import com.syfuzzaman.swipeable_video_player_android.auto_play.PlayerViewBindingAdapter.Companion.releaseRecycledPlayers
 import com.syfuzzaman.swipeable_video_player_android.common.PlayerStateCallback
+import com.syfuzzaman.swipeable_video_player_android.data.SessionPreference
 import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
 import com.syfuzzaman.swipeable_video_player_android.databinding.ItemVideoAutoplayBinding
+import com.syfuzzaman.swipeable_video_player_android.utils.observe
 
 class AutoPlayAdapter(
-    private val mContext: Context
+    private val mPref: SessionPreference,
+    private val lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), PlayerStateCallback {
 
     private var modelList: MutableList<ShortsBean> = mutableListOf()
@@ -32,6 +35,19 @@ class AutoPlayAdapter(
         if (holder is VideoPlayerViewHolder) {
             val model = getItem(position)
             holder.onBind(model)
+
+            // observe instruction and control volume of each video playback
+            val playerView = holder.itemView.findViewById<PlayerView>(R.id.item_video_exoplayer)
+            lifecycleOwner.observe(mPref.autoPlayWithVolumeLiveData){
+                if (it){
+                    playerView.player?.volume = 1f
+                    holder.itemView.findViewById<ImageView>(R.id.volumeControl).setImageResource(R.drawable.ic_unmute)
+                } else {
+                    playerView.player?.volume = 0f
+                    holder.itemView.findViewById<ImageView>(R.id.volumeControl).setImageResource(R.drawable.ic_mute)
+                }
+            }
+
         }
     }
 
@@ -67,15 +83,15 @@ class AutoPlayAdapter(
                 )
             }
 
+            // video playbacks volume control button click event
             binding.root.findViewById<ImageView>(R.id.volumeControl).setOnClickListener {
                 val player = binding.root.findViewById<PlayerView>(R.id.item_video_exoplayer).player
-                if (player?.volume == 0f){
-                    player.volume = 1f
-                    binding.root.findViewById<ImageView>(R.id.volumeControl).setImageResource(R.drawable.ic_unmute)
+
+                if (player?.volume == 0f){ // 0 -> Mute; 1 -> Sound
+                    mPref.autoPlayWithVolumeLiveData.postValue(true) // command observer to set volume on
                 }
                 else{
-                    player?.volume = 0f
-                    binding.root.findViewById<ImageView>(R.id.volumeControl).setImageResource(R.drawable.ic_mute)
+                    mPref.autoPlayWithVolumeLiveData.postValue(false) // command observer to set volume off
                 }
             }
 

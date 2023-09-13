@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,7 +42,8 @@ class ShortsAutoPlayFragment : BaseFragment(), BaseListItemCallback<ShortsBean> 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mAdapter = AutoPlayAdapter(requireContext())
+
+        mAdapter = AutoPlayAdapter(mPref, this)
         with(binding.rvShortsAutoPlay) {
             adapter = mAdapter
             setHasFixedSize(true)

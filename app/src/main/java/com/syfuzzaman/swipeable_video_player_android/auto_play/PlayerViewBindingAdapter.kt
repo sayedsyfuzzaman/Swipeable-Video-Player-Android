@@ -1,7 +1,6 @@
 package com.syfuzzaman.swipeable_video_player_android.auto_play
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -17,8 +16,6 @@ import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.ui.PlayerView
-import com.syfuzzaman.swipeable_video_player_android.R
-import com.syfuzzaman.swipeable_video_player_android.TAG
 import com.syfuzzaman.swipeable_video_player_android.common.PlayerStateCallback
 import com.syfuzzaman.swipeable_video_player_android.data.SessionPreference
 import okhttp3.OkHttpClient
@@ -33,7 +30,7 @@ class PlayerViewBindingAdapter  @Inject constructor(private val mPref: SessionPr
     fun PlayerView.loadVideo(url: String, callback: PlayerStateCallback, progressbar: ProgressBar, thumbnail: ImageView, item_index: Int? = null, autoPlay: Boolean = false, volumeControl : ImageView) {
 
         val player: ExoPlayer?
-        val httpDataSourceFactory: OkHttpDataSource.Factory?
+        val okHttpDataSourceFactory: OkHttpDataSource.Factory?
 
         thumbnail.visibility = View.VISIBLE
         progressbar.visibility = View.GONE
@@ -49,8 +46,8 @@ class PlayerViewBindingAdapter  @Inject constructor(private val mPref: SessionPr
             .build()
 
         // Create a HttpDataSourceFactory with the custom OkHttpClient
-        httpDataSourceFactory = OkHttpDataSource.Factory(client)
-        val mediaSourceFactory = DefaultMediaSourceFactory(httpDataSourceFactory)
+        okHttpDataSourceFactory = OkHttpDataSource.Factory(client)
+        val mediaSourceFactory = DefaultMediaSourceFactory(okHttpDataSourceFactory)
 
         val trackSelector = DefaultTrackSelector(context).apply {
             setParameters(buildUponParameters().setMaxVideoSizeSd())
@@ -86,8 +83,6 @@ class PlayerViewBindingAdapter  @Inject constructor(private val mPref: SessionPr
             playersMap.remove(item_index)
         if (item_index != null)
             playersMap[item_index] = player
-
-        Log.d(TAG, "loadVideo: ${mPref.autoPlayVolume}")
 
 
         player.addListener(object : Player.Listener {

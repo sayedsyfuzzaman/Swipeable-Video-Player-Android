@@ -11,5 +11,5 @@ import dagger.hilt.InstallIn
 interface CustomBindingEntryPoint : DataBindingComponent {
 
     @BindingScoped
-    fun getImageBindingAdapter(): PlayerViewBindingAdapter
+    override fun getPlayerViewBindingAdapter(): PlayerViewBindingAdapter
 }
