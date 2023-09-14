@@ -60,8 +60,7 @@ class VideoPagerAdapter(
     var positionWiseContentId: MutableMap<Int, Int> = mutableMapOf()
     var exoBuffering: ProgressBar? = null
 
-    private val newList: List<ShortsBean> =
-        listOf(videoItems.last()) + videoItems + listOf(videoItems.first())
+    private val newList: List<ShortsBean> =videoItems + listOf(videoItems.first())
 
     init {
         val evict = LeastRecentlyUsedCacheEvictor((100 * 1024 * 1024).toLong())
@@ -93,11 +92,12 @@ class VideoPagerAdapter(
 
             var videoElement = ShortsBean()
             Log.d("crash_issue_infscroll", "bindpos: ${holder.bindingAdapterPosition}, size: ${newList.size}")
-            if ((holder.bindingAdapterPosition) == newList.size-1){
-                videoElement = newList[0]
-            }else{
-                videoElement = newList[holder.bindingAdapterPosition+1]
-            }
+//            if ((holder.bindingAdapterPosition) == newList.size-1){
+//                videoElement = newList[0]
+//            }else{
+//                videoElement = newList[holder.bindingAdapterPosition+1]
+//            }
+            videoElement = newList[holder.bindingAdapterPosition]
 
             // add content id with respect to position
             if (positionWiseContentId.containsKey(position))

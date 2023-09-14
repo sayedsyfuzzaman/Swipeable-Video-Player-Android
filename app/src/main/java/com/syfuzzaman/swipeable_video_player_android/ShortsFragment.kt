@@ -70,10 +70,10 @@ class ShortsFragment : Fragment() {
         override fun onPageScrollStateChanged(state: Int) {
             super.onPageScrollStateChanged(state)
 
+            Log.d(TAG, "onPageScrollStateChanged: $listSize")
             if (state == ViewPager2.SCROLL_STATE_IDLE) {
                 when (binding.viewPager.currentItem) {
-                    listSize - 1 -> binding.viewPager.setCurrentItem(1, false)
-                    0 -> binding.viewPager.setCurrentItem(listSize - 2, false)
+                    listSize-1 -> binding.viewPager.setCurrentItem(0, false)
                 }
             }
         }
@@ -101,7 +101,7 @@ class ShortsFragment : Fragment() {
             shorts,
             this
         )
-        binding.viewPager.registerOnPageChangeCallback(viewPagerPageChangedCallback(shorts.size + 2))
+        binding.viewPager.registerOnPageChangeCallback(viewPagerPageChangedCallback(shorts.size + 1))
         binding.viewPager.adapter = videoPagerAdapter
         binding.viewPager.currentItem = 0
         scrollToNext()
