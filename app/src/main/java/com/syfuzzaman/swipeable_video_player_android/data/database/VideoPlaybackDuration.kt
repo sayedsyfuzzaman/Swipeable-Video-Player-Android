@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity
 data class VideoPlaybackDuration(
     @PrimaryKey(autoGenerate = false)
-    val contentId: Int,
-    val lastPlaybackDuration: Long
+    val contentId: Int ?= null,
+    val lastPlaybackDuration: Long ?= null
 )

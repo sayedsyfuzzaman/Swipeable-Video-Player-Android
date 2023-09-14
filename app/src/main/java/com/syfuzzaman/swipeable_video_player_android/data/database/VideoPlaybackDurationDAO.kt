@@ -17,6 +17,6 @@ interface VideoPlaybackDurationDAO {
     @Delete
     suspend fun removePlaybackDuration(videoPlaybackDuration: VideoPlaybackDuration)
 
-    @Query("SELECT * FROM VideoPlaybackDuration WHERE contentId == :contentId ORDER BY contentId DESC LIMIT 1")
-    suspend fun getPlaybackDurationByContentId(contentId: Int): VideoPlaybackDuration
+    @Query("SELECT * FROM VideoPlaybackDuration WHERE contentId = :contentId ORDER BY contentId DESC LIMIT 1")
+    suspend fun getPlaybackDurationByContentId(contentId: Int): VideoPlaybackDuration?
 }

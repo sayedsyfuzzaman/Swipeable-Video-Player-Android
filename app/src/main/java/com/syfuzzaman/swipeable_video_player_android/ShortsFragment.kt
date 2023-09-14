@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
@@ -15,6 +16,8 @@ import com.syfuzzaman.swipeable_video_player_android.data.Resource
 import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
 import com.syfuzzaman.swipeable_video_player_android.utils.observe
 import com.syfuzzaman.swipeable_video_player_android.databinding.FragmentShortsBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ShortsFragment : Fragment() {
 
@@ -23,8 +26,12 @@ class ShortsFragment : Fragment() {
     private val viewModel by activityViewModels<MyViewModel>()
     private var selectedPosition = 0
     private var shortsList: List<ShortsBean>? = null
-    
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentShortsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,7 +43,7 @@ class ShortsFragment : Fragment() {
 
         Log.d("last_item_play_issue", "onViewCreated: $shortsList")
 
-        shortsList?.let { 
+        shortsList?.let {
             loadAdapter(it)
         } ?: run {
             observeShortsResponse()
@@ -49,6 +56,8 @@ class ShortsFragment : Fragment() {
         binding.search.setOnClickListener {
             Toast.makeText(requireContext(), "Action Required!", Toast.LENGTH_SHORT).show()
         }
+        
+
 
     }
 
@@ -69,13 +78,13 @@ class ShortsFragment : Fragment() {
             }
         }
     }
-    
+
     private fun observeShortsResponse() {
         observe(viewModel.shortsResponse) {
             when (it) {
                 is Resource.Success -> {
                     Log.d("ND_SHORTS", "observeShortsResponse: ${it.data.shorts}")
-                    loadAdapter(it.data.shorts)
+                    loadAdapter(it.data.shorts.asReversed())
                 }
 
                 is Resource.Failure -> {
@@ -92,18 +101,19 @@ class ShortsFragment : Fragment() {
             shorts,
             this
         )
-        binding.viewPager.registerOnPageChangeCallback(viewPagerPageChangedCallback(shorts.size+2))
+        binding.viewPager.registerOnPageChangeCallback(viewPagerPageChangedCallback(shorts.size + 2))
         binding.viewPager.adapter = videoPagerAdapter
         binding.viewPager.currentItem = 0
         scrollToNext()
     }
 
     private fun scrollToNext() {
-        observe(viewModel.swipeJob){
+        observe(viewModel.swipeJob) {
             Log.d("PAGE_SCROLL", "startPageScroll: call")
-            if (it){
+            if (it) {
                 if ((videoPagerAdapter?.itemCount ?: 0) > 0) {
-                    binding.viewPager.currentItem = (binding.viewPager.currentItem + 1) % videoPagerAdapter!!.itemCount
+                    binding.viewPager.currentItem =
+                        (binding.viewPager.currentItem + 1) % videoPagerAdapter!!.itemCount
                     Log.d("PAGE_SCROLL", "startPageScroll: scrolled")
                 }
             }
@@ -115,6 +125,7 @@ class ShortsFragment : Fragment() {
         videoPagerAdapter?.release()
         binding.viewPager.unregisterOnPageChangeCallback(viewPagerPageChangedCallback(0))
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         videoPagerAdapter?.release()
@@ -124,7 +135,7 @@ class ShortsFragment : Fragment() {
         super.onResume()
         videoPagerAdapter?.resume(binding.viewPager.currentItem)
     }
-    
+
     override fun onPause() {
         super.onPause()
         videoPagerAdapter?.pause(binding.viewPager.currentItem)

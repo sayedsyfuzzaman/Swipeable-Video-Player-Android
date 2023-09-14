@@ -196,10 +196,6 @@ class VideoPagerAdapter(
                     exoPlayer.prepare()
                 }
 
-            lifecycleOwner?.observe(viewModel.contentWiseLastPlaybackDuration){
-                player?.seekTo(it.lastPlaybackDuration)
-            }
-
             // Set an event listener to detect when the video playback ends
             player?.addListener(object : Player.Listener {
                 override fun onPlaybackStateChanged(playbackState: Int) {
@@ -208,7 +204,7 @@ class VideoPagerAdapter(
                             exoBuffering?.visibility = View.GONE
                             viewModel.swipeJob.value = holder.bindingAdapterPosition < videoItems.size-1
                             Log.d("PAGE_SCROLL", "startPageScroll: video ends")
-//                            insertVideoPlaybackDuration(videoElement.id?:0, player?.duration?:0)
+                            insertVideoPlaybackDuration(videoElement.id?:0, 0)
                         }
                         Player.STATE_BUFFERING -> {
                             exoBuffering?.visibility = View.VISIBLE
@@ -229,7 +225,13 @@ class VideoPagerAdapter(
                         // might be idle (plays after prepare()),
                         // buffering (plays when data available)
                         // or ended (plays when seek away from end)
-                    } else {
+                    } else if(playbackState == Player.STATE_ENDED){
+                        insertVideoPlaybackDuration(
+                            positionWiseContentId[holder.bindingAdapterPosition] ?: 0,
+                            0
+                        )
+                    }
+                    else {
                         // player paused in any state
                         insertVideoPlaybackDuration(
                             positionWiseContentId[holder.bindingAdapterPosition] ?: 0,
@@ -283,28 +285,34 @@ class VideoPagerAdapter(
     override fun getItemCount(): Int = newList.size
 
     fun startPlaying(position: Int) {
-        pause(position)
-        hashMap[position]?.binding?.videoFrame?.findViewById<ImageView>(R.id.play_pause)?.isVisible = false
-        hashMap[position]?.binding?.videoFrame?.findViewById<DefaultTimeBar>(R.id.exo_progress)?.hideScrubber(0)
-        hashMap[position]?.binding?.videoFrame?.player?.apply {
-            seekTo(0)
-            playWhenReady = true
-            if (this.playerError != null) {
-                prepare()
+        lifecycleOwner.lifecycleScope.launch {
+
+            val videolayback: VideoPlaybackDuration?
+            if (positionWiseContentId.isNotEmpty()){
+                videolayback = viewModel.getLastVideoPlayback(positionWiseContentId[position] ?: 0)
+            }else{
+                videolayback = VideoPlaybackDuration(0,0)
+            }
+
+            Log.d(TAG, "onViewCreated: $videolayback")
+            pause(position)
+            hashMap[position]?.binding?.videoFrame?.findViewById<ImageView>(R.id.play_pause)?.isVisible = false
+            hashMap[position]?.binding?.videoFrame?.findViewById<DefaultTimeBar>(R.id.exo_progress)?.hideScrubber(0)
+
+
+            hashMap[position]?.binding?.videoFrame?.player?.apply {
+                if ((videolayback?.lastPlaybackDuration ?: 0) > 0 && (videolayback?.lastPlaybackDuration?:0) < duration){
+                    seekTo(videolayback?.lastPlaybackDuration ?: 0)
+                }else{
+                    seekTo(0)
+                }
+                playWhenReady = true
+                if (this.playerError != null) {
+                    prepare()
+                }
             }
         }
-//        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
-//            hashMap[position]?.binding?.videoFrame?.findViewById<ImageView>(R.id.play_pause)?.isVisible = false
-//            hashMap[position]?.binding?.videoFrame?.findViewById<DefaultTimeBar>(R.id.exo_progress)?.hideScrubber(0)
-//            hashMap[position]?.binding?.videoFrame?.player?.apply {
-//                seekTo(positionWiseContentId[position]?.let { viewModel.getLastVideoPlayback(it).lastPlaybackDuration }
-//                    ?: 0)
-//                playWhenReady = true
-//                if (this.playerError != null) {
-//                    prepare()
-//                }
-//            }
-//        }
+
     }
 
     /* To stop the playing videos if any on activity closing,

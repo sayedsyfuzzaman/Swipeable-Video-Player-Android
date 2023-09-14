@@ -61,7 +61,7 @@ class MyViewModel @Inject constructor(
         }
     }
 
-    suspend fun getLastVideoPlayback(contentId: Int): VideoPlaybackDuration {
+    suspend fun getLastVideoPlayback(contentId: Int): VideoPlaybackDuration? {
 //        viewModelScope.launch(Dispatchers.IO){
             return videoPlaybackDurationDAO.getPlaybackDurationByContentId(contentId)
 //            contentWiseLastPlaybackDuration.postValue(response)
