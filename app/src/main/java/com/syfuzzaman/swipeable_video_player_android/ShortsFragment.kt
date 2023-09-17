@@ -41,7 +41,6 @@ class ShortsFragment : Fragment() {
 //        selectedPosition = arguments?.getInt("selectedPosition", 0) ?: 0
         shortsList = arguments?.getParcelableArrayList("shorts")
 
-        Log.d("last_item_play_issue", "onViewCreated: $shortsList")
 
         shortsList?.let {
             loadAdapter(it)
@@ -64,13 +63,11 @@ class ShortsFragment : Fragment() {
     private fun viewPagerPageChangedCallback(listSize: Int) = object : OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
-            videoPagerAdapter?.startPlaying(position)
+            videoPagerAdapter?.startPlaying(position, videoPagerAdapter?.positionWiseContentId?.get(position) ?: 0)
         }
 
         override fun onPageScrollStateChanged(state: Int) {
             super.onPageScrollStateChanged(state)
-
-            Log.d(TAG, "onPageScrollStateChanged: $listSize")
             if (state == ViewPager2.SCROLL_STATE_IDLE) {
                 when (binding.viewPager.currentItem) {
                     listSize-1 -> binding.viewPager.setCurrentItem(0, false)
@@ -83,8 +80,7 @@ class ShortsFragment : Fragment() {
         observe(viewModel.shortsResponse) {
             when (it) {
                 is Resource.Success -> {
-                    Log.d("ND_SHORTS", "observeShortsResponse: ${it.data.shorts}")
-                    loadAdapter(it.data.shorts.asReversed())
+                    loadAdapter(it.data.shorts)
                 }
 
                 is Resource.Failure -> {
@@ -109,12 +105,9 @@ class ShortsFragment : Fragment() {
 
     private fun scrollToNext() {
         observe(viewModel.swipeJob) {
-            Log.d("PAGE_SCROLL", "startPageScroll: call")
             if (it) {
                 if ((videoPagerAdapter?.itemCount ?: 0) > 0) {
-                    binding.viewPager.currentItem =
-                        (binding.viewPager.currentItem + 1) % videoPagerAdapter!!.itemCount
-                    Log.d("PAGE_SCROLL", "startPageScroll: scrolled")
+                    binding.viewPager.currentItem = (binding.viewPager.currentItem + 1) % videoPagerAdapter!!.itemCount
                 }
             }
         }

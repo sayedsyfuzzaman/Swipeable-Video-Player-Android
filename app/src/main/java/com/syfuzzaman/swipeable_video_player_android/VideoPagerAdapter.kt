@@ -74,7 +74,6 @@ class VideoPagerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val videoPager = LayoutInflater.from(parent.context).inflate(R.layout.item_video, parent, false)
-        Log.d("nd_shorts", "onCreateViewHolder Called")
         return VideoViewHolder(videoPager)
     }
 
@@ -82,16 +81,12 @@ class VideoPagerAdapter(
     @SuppressLint("UnsafeOptInUsageError")
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         with(holder.binding) {
-            Log.d("item_play_issue", "Binding position: $position")
-            Log.d("item_play_issue", "onBindViewHolder: $newList")
-            
             // add holder with its index to map
             if (hashMap.containsKey(position))
                 hashMap.remove(position)
             hashMap[position] = holder
 
             var videoElement = ShortsBean()
-            Log.d("crash_issue_infscroll", "bindpos: ${holder.bindingAdapterPosition}, size: ${newList.size}")
 //            if ((holder.bindingAdapterPosition) == newList.size-1){
 //                videoElement = newList[0]
 //            }else{
@@ -201,10 +196,9 @@ class VideoPagerAdapter(
                 override fun onPlaybackStateChanged(playbackState: Int) {
                     when (playbackState) {
                         Player.STATE_ENDED -> {
+                            insertVideoPlaybackDuration(videoElement.id ?: 0, 0)
                             exoBuffering?.visibility = View.GONE
                             viewModel.swipeJob.value = holder.bindingAdapterPosition < videoItems.size-1
-                            Log.d("PAGE_SCROLL", "startPageScroll: video ends")
-                            insertVideoPlaybackDuration(videoElement.id?:0, 0)
                         }
                         Player.STATE_BUFFERING -> {
                             exoBuffering?.visibility = View.VISIBLE
@@ -225,13 +219,8 @@ class VideoPagerAdapter(
                         // might be idle (plays after prepare()),
                         // buffering (plays when data available)
                         // or ended (plays when seek away from end)
-                    } else if(playbackState == Player.STATE_ENDED){
-                        insertVideoPlaybackDuration(
-                            positionWiseContentId[holder.bindingAdapterPosition] ?: 0,
-                            0
-                        )
                     }
-                    else {
+                    else if (playbackState != ExoPlayer.STATE_ENDED){
                         // player paused in any state
                         insertVideoPlaybackDuration(
                             positionWiseContentId[holder.bindingAdapterPosition] ?: 0,
@@ -253,20 +242,17 @@ class VideoPagerAdapter(
 
     override fun onViewAttachedToWindow(holder: VideoViewHolder) {
         super.onViewAttachedToWindow(holder)
-        Log.d("nd_shorts", "onViewAttachedToWindow: ")
 //        viewModel.getLastVideoPlayback(positionWiseContentId[holder.bindingAdapterPosition] ?: 0)
     }
     
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
-        Log.d("nd_shorts", "Player Released onDetach")
         player?.release()
         simpleCache.release()
     }
 
     override fun onViewRecycled(holder: VideoViewHolder) {
         super.onViewRecycled(holder)
-        Log.d("nd_shorts", "View recycled")
         holder.binding.videoFrame.player?.release()
         simpleCache.release()
     }
@@ -274,36 +260,45 @@ class VideoPagerAdapter(
     override fun onViewDetachedFromWindow(holder: VideoViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.binding.videoFrame.player?.pause()
-        insertVideoPlaybackDuration(
-            positionWiseContentId[holder.bindingAdapterPosition] ?: 0,
-            hashMap[holder.bindingAdapterPosition]?.binding?.videoFrame?.player?.currentPosition ?: 0
-        )
+//        insertVideoPlaybackDuration(
+//            positionWiseContentId[holder.bindingAdapterPosition] ?: 0,
+//            hashMap[holder.bindingAdapterPosition]?.binding?.videoFrame?.player?.currentPosition ?: 0
+//        )
         simpleCache.release()
 
     }
 
     override fun getItemCount(): Int = newList.size
 
-    fun startPlaying(position: Int) {
+    fun startPlaying(position: Int, contentId: Int?) {
         lifecycleOwner.lifecycleScope.launch {
+            Log.d(TAG, "startPlaying content: $contentId")
+//            if (positionWiseContentId.isNotEmpty()){
+//                videolayback = viewModel.getLastVideoPlayback(positionWiseContentId[position] ?: 0)
+//            }else{
+//                videolayback = VideoPlaybackDuration(0,0)
+//            }
 
-            val videolayback: VideoPlaybackDuration?
-            if (positionWiseContentId.isNotEmpty()){
-                videolayback = viewModel.getLastVideoPlayback(positionWiseContentId[position] ?: 0)
-            }else{
-                videolayback = VideoPlaybackDuration(0,0)
-            }
+            val videolayback: VideoPlaybackDuration? =
+                viewModel.getLastVideoPlayback( contentId ?: positionWiseContentId[position] ?: 0)
 
-            Log.d(TAG, "onViewCreated: $videolayback")
+            Log.d(TAG, "content seek time: ${videolayback?.lastPlaybackDuration}")
+            Log.d(TAG, "content duration: ${videolayback?.lastPlaybackDuration}")
             pause(position)
             hashMap[position]?.binding?.videoFrame?.findViewById<ImageView>(R.id.play_pause)?.isVisible = false
             hashMap[position]?.binding?.videoFrame?.findViewById<DefaultTimeBar>(R.id.exo_progress)?.hideScrubber(0)
 
 
             hashMap[position]?.binding?.videoFrame?.player?.apply {
-                if ((videolayback?.lastPlaybackDuration ?: 0) > 0 && (videolayback?.lastPlaybackDuration?:0) < duration){
+//                if ((videolayback?.lastPlaybackDuration ?: 0) > 0 && (videolayback?.lastPlaybackDuration?:0) < duration){
+//                    seekTo(videolayback?.lastPlaybackDuration ?: 0)
+//                }else{
+//                    seekTo(0)
+//                }
+
+                if ((videolayback?.lastPlaybackDuration ?: 0) > 0 && (videolayback?.lastPlaybackDuration ?: 0) != duration){
                     seekTo(videolayback?.lastPlaybackDuration ?: 0)
-                }else{
+                } else {
                     seekTo(0)
                 }
                 playWhenReady = true
