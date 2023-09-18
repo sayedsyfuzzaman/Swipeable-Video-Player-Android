@@ -111,8 +111,8 @@ class PlayerViewBindingAdapter  @Inject constructor(private val mPref: SessionPr
 
     }
     companion object{
-        private var playersMap: MutableMap <Int, ExoPlayer>  = mutableMapOf()
-        private var currentPlayingVideo: Pair<Int, ExoPlayer>? = null
+        var playersMap: MutableMap <Int, ExoPlayer>  = mutableMapOf()
+        var currentPlayingVideo: Pair<Int, ExoPlayer>? = null
 
         fun releaseAllPlayers(){
             playersMap.map {
@@ -133,10 +133,17 @@ class PlayerViewBindingAdapter  @Inject constructor(private val mPref: SessionPr
         }
 
         // call when scroll to pause any playing player
-        private fun pauseCurrentPlayingVideo(){
+        fun pauseCurrentPlayingVideo(){
             if (currentPlayingVideo != null){
                 currentPlayingVideo?.second?.playWhenReady = false
                 currentPlayingVideo?.second?.pause()
+            }
+        }
+
+        fun resumeCurrentPlayingVideo(){
+            if (currentPlayingVideo != null){
+                currentPlayingVideo?.second?.playWhenReady = true
+                currentPlayingVideo?.second?.play()
             }
         }
 

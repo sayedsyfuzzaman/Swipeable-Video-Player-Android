@@ -71,6 +71,7 @@
                 android:padding="32dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_mute"
+                android:scaleX="-1"
                 app:tint="@color/white" />
 
 

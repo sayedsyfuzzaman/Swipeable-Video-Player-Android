@@ -24,6 +24,7 @@ class MyViewModel @Inject constructor(
     val shortsBannerResponse =  SingleLiveEvent<Resource<ShortsAPIResponse>>()
     var featuredJob: Job? = null
     var swipeJob = MutableLiveData<Boolean>()
+    var autoPlayFragmentFullyVisible = MutableLiveData<Boolean>()
 
     var contentWiseLastPlaybackDuration = MutableLiveData<VideoPlaybackDuration>()
 

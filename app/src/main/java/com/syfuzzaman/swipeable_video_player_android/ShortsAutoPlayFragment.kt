@@ -15,9 +15,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.syfuzzaman.swipeable_video_player_android.auto_play.AutoPlayAdapter
+import com.syfuzzaman.swipeable_video_player_android.auto_play.PlayerViewBindingAdapter
 import com.syfuzzaman.swipeable_video_player_android.auto_play.PlayerViewBindingAdapter.Companion.pauseAllPlayers
+import com.syfuzzaman.swipeable_video_player_android.auto_play.PlayerViewBindingAdapter.Companion.pauseCurrentPlayingVideo
 import com.syfuzzaman.swipeable_video_player_android.auto_play.PlayerViewBindingAdapter.Companion.playIndexThenPausePreviousPlayer
 import com.syfuzzaman.swipeable_video_player_android.auto_play.PlayerViewBindingAdapter.Companion.releaseAllPlayers
+import com.syfuzzaman.swipeable_video_player_android.auto_play.PlayerViewBindingAdapter.Companion.resumeCurrentPlayingVideo
 import com.syfuzzaman.swipeable_video_player_android.common.BaseFragment
 import com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback
 import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
@@ -34,7 +37,7 @@ class ShortsAutoPlayFragment : BaseFragment(), BaseListItemCallback<ShortsBean> 
     private val viewModel by activityViewModels<MyViewModel>()
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private lateinit var mAdapter: AutoPlayAdapter
-
+    private var firstVisibleItem = 0
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentShortsAutoPlayBinding.inflate(inflater, container, false)
         return binding.root
@@ -59,7 +62,7 @@ class ShortsAutoPlayFragment : BaseFragment(), BaseListItemCallback<ShortsBean> 
                         require(manager is LinearLayoutManager) { "Expected recyclerview to have linear layout manager" }
                         val mLayoutManager = manager
                         // var visibleItemCount = mLayoutManager.childCount
-                        val firstVisibleItem = mLayoutManager.findFirstCompletelyVisibleItemPosition()
+                        firstVisibleItem = mLayoutManager.findFirstCompletelyVisibleItemPosition()
                         playIndexThenPausePreviousPlayer(firstVisibleItem)
                     }
                 }
@@ -83,6 +86,7 @@ class ShortsAutoPlayFragment : BaseFragment(), BaseListItemCallback<ShortsBean> 
             mAdapter.addAll(homeViewModel.autoPlayShorts.value ?: emptyList())
         } else {
             observeShortsResponse()
+            observeAutoPlayFragmentVisibility()
             viewModel.getShortsAutoPlayResponse()
         }
     }
@@ -100,6 +104,16 @@ class ShortsAutoPlayFragment : BaseFragment(), BaseListItemCallback<ShortsBean> 
                 is Resource.Failure -> {
                     Toast.makeText(requireContext(), it.error.msg, Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+    }
+
+    private fun observeAutoPlayFragmentVisibility(){
+        observe(viewModel.autoPlayFragmentFullyVisible){
+            if (it){
+                playIndexThenPausePreviousPlayer(firstVisibleItem)
+            }else{
+                pauseCurrentPlayingVideo()
             }
         }
     }
