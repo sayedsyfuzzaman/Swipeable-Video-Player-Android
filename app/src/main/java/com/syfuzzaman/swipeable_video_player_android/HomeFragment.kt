@@ -42,10 +42,8 @@ class HomeFragment : Fragment(), BaseListItemCallback<ShortsBean> {
                     // Scrolling is still in progress, do nothing
                 } else {
                     // Scrolling has stopped, check fragment visibility
-                    Log.d(TAG, "nestedScrollView: stopped scroll")
                     val visibility = isFragmentFullyVisible(binding.shortsAutoPlayFragment, binding.nestedScrollView)
                     viewModel.autoPlayFragmentFullyVisible.value = visibility
-                    Log.d(TAG, "shortsAutoPlayFragment visibility: $visibility")
                 }
             }, 300) // Adjust the delay time as needed
         }

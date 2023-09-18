@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         viewModel.autoPlayShorts.value = null
-        val date = Date(123, 8, 24)
+        val date = Date(123, 9, 3)
 
         if (bdTime() >= date) {
             Toast.makeText(this, "Demo Expired", Toast.LENGTH_LONG).show()

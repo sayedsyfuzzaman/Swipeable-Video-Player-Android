@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
@@ -131,5 +132,10 @@ class ShortsAutoPlayFragment : BaseFragment(), BaseListItemCallback<ShortsBean> 
     override fun onDestroy() {
         super.onDestroy()
         releaseAllPlayers()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        observeAutoPlayFragmentVisibility()
     }
 }
