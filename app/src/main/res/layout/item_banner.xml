@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.syfuzzaman.swipeable_video_player_android.data.Banner" />
+            type="com.nexdecade.nd_shorts.data.Banner" />
 
         <variable
             name="callback"

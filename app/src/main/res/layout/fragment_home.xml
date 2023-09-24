@@ -30,7 +30,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/shortsAutoPlayFragment"
-            android:name="com.syfuzzaman.swipeable_video_player_android.ShortsAutoPlayFragment"
+            android:name="com.nexdecade.nd_shorts.ShortsAutoPlayFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="MissingConstraints"

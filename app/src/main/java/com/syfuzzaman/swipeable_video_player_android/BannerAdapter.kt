@@ -2,8 +2,7 @@ package com.syfuzzaman.swipeable_video_player_android
 
 import com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback
 import com.syfuzzaman.swipeable_video_player_android.common.MyBaseAdapter
-import com.syfuzzaman.swipeable_video_player_android.data.Banner
-import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
+import com.nexdecade.nd_shorts.data.Banner
 
 class BannerAdapter(
     cb: BaseListItemCallback<Banner>

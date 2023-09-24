@@ -10,7 +10,7 @@
 
         <variable
             name="data"
-            type="com.syfuzzaman.swipeable_video_player_android.data.ShortsBean" />
+            type="com.nexdecade.nd_shorts.data.ShortsBean" />
 
         <variable
             name="position"

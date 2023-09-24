@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/shortsFragment"
-        android:name="com.syfuzzaman.swipeable_video_player_android.ShortsFragment"
+        android:name="com.nexdecade.nd_shorts.ShortsFragment"
         android:label="fragment_shorts"
         tools:layout="@layout/fragment_shorts" />
 </navigation>

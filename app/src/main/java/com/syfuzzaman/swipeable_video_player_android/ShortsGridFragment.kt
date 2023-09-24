@@ -12,11 +12,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback
-import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
-import com.syfuzzaman.swipeable_video_player_android.data.Resource
-import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
-import com.syfuzzaman.swipeable_video_player_android.utils.navigateTo
-import com.syfuzzaman.swipeable_video_player_android.utils.observe
+import com.nexdecade.nd_shorts.data.MyViewModel
+import com.nexdecade.nd_shorts.data.Resource
+import com.nexdecade.nd_shorts.data.ShortsBean
+import com.nexdecade.nd_shorts.utils.navigateTo
+import com.nexdecade.nd_shorts.utils.observe
 import com.syfuzzaman.swipeable_video_player_android.databinding.FragmentShortsGridBinding
 
 class ShortsGridFragment : Fragment(), BaseListItemCallback<ShortsBean> {

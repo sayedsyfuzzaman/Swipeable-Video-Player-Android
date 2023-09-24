@@ -9,15 +9,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback
-import com.syfuzzaman.swipeable_video_player_android.data.Banner
-import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
+import com.nexdecade.nd_shorts.data.Banner
+import com.nexdecade.nd_shorts.data.MyViewModel
 import com.syfuzzaman.swipeable_video_player_android.databinding.FragmentBannerBinding
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-class BannerFragment : Fragment() , BaseListItemCallback<Banner>{
+class BannerFragment : Fragment() , BaseListItemCallback<Banner> {
     private lateinit var binding: FragmentBannerBinding
     private var slideJob: Job? = null
     private val viewModel by activityViewModels<MyViewModel>()

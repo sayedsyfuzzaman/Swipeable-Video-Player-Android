@@ -10,8 +10,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.syfuzzaman.swipeable_video_player_android.utils.navigatePopUpTo
-import com.syfuzzaman.swipeable_video_player_android.utils.navigateTo
+import com.nexdecade.nd_shorts.utils.navigatePopUpTo
+import com.nexdecade.nd_shorts.utils.navigateTo
 import com.syfuzzaman.swipeable_video_player_android.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat

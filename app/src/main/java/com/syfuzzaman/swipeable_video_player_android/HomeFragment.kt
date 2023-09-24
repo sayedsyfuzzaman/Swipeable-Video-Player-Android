@@ -1,10 +1,8 @@
 package com.syfuzzaman.swipeable_video_player_android
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +10,8 @@ import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.activityViewModels
 import com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback
-import com.syfuzzaman.swipeable_video_player_android.data.MyViewModel
-import com.syfuzzaman.swipeable_video_player_android.data.ShortsAPIResponse
-import com.syfuzzaman.swipeable_video_player_android.data.ShortsBean
+import com.nexdecade.nd_shorts.data.MyViewModel
+import com.nexdecade.nd_shorts.data.ShortsBean
 import com.syfuzzaman.swipeable_video_player_android.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment(), BaseListItemCallback<ShortsBean> {

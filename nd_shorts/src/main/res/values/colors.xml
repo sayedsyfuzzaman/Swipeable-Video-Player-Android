@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="red_200">#EF9A9A</color>
+    <color name="red_500">#F44336</color>
+    <color name="red_700">#CE011B</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="blue">#3F51B5</color>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="appPrimaryColor">#CE011B</color>
+    <color name="playerSeekBarColor">#CE011B</color>
+    <color name="playerSeekBarBufferColor">#33CE011B</color>
+
+
+    <color name="colorPrimary">#CE011B</color>
+    <color name="colorPrimaryDark">#CE011B</color>
+
+    <color name="colorSecondary">#CE011B</color>
+    <color name="colorSecondaryLight">#62E1D0</color>
+    <color name="colorSecondaryDark">#CE011B</color>
+    <color name="colorSecondaryAccent">#BED6F3</color>
+
+    <color name="colorAccent">#CE011B</color>
+    <color name="colorAccentDark">#009688</color>
+
+    <color name="colorProgressFill">#E10E62</color>
+
+    <color name="colorButtonSecondary">#29466B</color>
+    <color name="colorButtonActivated">#FFC9DF</color>
+    <color name="colorButtonInActive">#A8A8A8</color>
+    <color name="colorSettingsDivider">#E1E1E1</color>
+
+    <color name="menuColorSecondaryDark">#29466B</color>
+
+    <color name="btn_start">#FF3B3C</color>
+    <color name="btn_end">#223B73</color>
+    <color name="bg_color">#F5F5F5</color>
+
+    <color name="screen_bg">#ECECEC</color>
+    <color name="screen_bg_white">#FFFFFF</color>
+    <color name="colorAccent2">#FF3988</color>
+    <color name="colorAccent2Alpha">#80FF3988</color>
+    <color name="nav_menu_text_color">@color/main_text_color</color>
+    <color name="bottom_navbar_disabled_color">#29466B</color>
+
+    <color name="input_bg_color">#F2F2F2</color>
+    <color name="dialog_input_bg_color">#F2F2F2</color>
+    <color name="fab_icon_bg">#FFFFFF</color>
+
+    <color name="window_background">#F3F3F3</color>
+
+    <color name="main_text_color">@color/white</color>
+    <color name="fixed_second_main_text_color">#6781A1</color>
+    <color name="view_all_text_color">@color/colorButtonSecondary</color>
+    <color name="second_text_color">#829AB8</color>
+    <color name="fixed_second_text_color">@color/white</color>
+    <color name="switch_color">#829AB8</color>
+    <color name="option_menu_icon_color">#707070</color>
+    <color name="edit_view_text_color">#1C2631</color>
+    <color name="view_all_txt_color">@android:color/black</color>
+
+    <color name="darker_gray">#7E7E7E</color>
+    <color name="lightGray">#e0e0e0</color>
+    <color name="searchBarBgColor">#F2F2F2</color>
+    <color name="searchview_input_text_color">#29466B</color>
+    <color name="tab_unselected">#29466B</color>
+
+    <color name="state_background_color">#BDBDBD</color>
+    <color name="disabled_color">#F9F9F9</color>
+    <color name="disabled_text_color">#757575</color>
+    <color name="state_background_text_color">#808080</color>
+    <color name="state_foreground_text_color">#eeeeee</color>
+
+    <color name="tool_bar_color">@android:color/white</color>
+    <color name="title_color">#3e5979</color>
+    <color name="tab_background_color">@android:color/white</color>
+    <color name="home_screen_curve_bg_color">@android:color/white</color>
+    <color name="home_screen_curve_bg_color_light">#F5F5F5</color>
+
+    <color name="text_color_white">#ffffff</color>
+    <color name="tooltip_mask">#CC4f5355</color>
+
+    <color name="title_text_color">#000000</color>
+    <color name="title_text_color_light">#d3d3d3</color>
+
+    <color name="tap_circle_color">#18FFFFFF</color>
+    <color name="background_circle_color">#20EEEEEE</color>
+
+    <color name="dark_green">#53AA57</color>
+    <color name="light_green">#8BC34A</color>
+    <color name="accent_green">#C5E1A5</color>
+    <color name="overlay_dark_color">#80231F20</color>
+    <color name="purple">#34C9B5</color>
+    <color name="scrollbarTrackColor">#33000000</color>
+    <color name="cardOverlayColor">#FFFFFFFF</color>
+    <color name="unseenCardColor">#21263A</color>
+    <color name="reactionBgColor">#34C9B5</color>
+    <color name="approvalPendingColor">#FF8B57</color>
+    <color name="reverseBgColor">#000000</color>
+    <color name="backgroundAlpha">#80ffffff</color>
+    <color name="backgroundDarkAlpha">#80000000</color>
+    <color name="ratingIconColor">#29466B</color>
+    <color name="ratingButtonActiveColor">#BED6F3</color>
+    <color name="tvChannelLogoBg">#FFFFFF</color>
+    <color name="durationBgColor">#88000000</color>
+    <color name="placeholderBgColor">#E1E1E1</color>
+    <color name="placeholderCatBgColor">#F1F1F1</color>
+    <color name="placeholderCircleBgColor">#E1E1E1</color>
+    <color name="statusTextBgColor">#E1E1E1</color>
+    <color name="switchUnCheckedColor">#829AB8</color>
+    <color name="cardBgColor">#24283B</color>
+    <color name="cardTitleColor">#F44336</color>
+    <color name="categoryNameColor">#6781A1</color>
+    <color name="tvChannelTitleColor">#111F31</color>
+    <color name="round_bg_tv_color">#f8f9f9</color>
+    <color name="poster_container_bg_color">#f8f9f9</color>
+    <color name="hashtag_chip_color">#BED6F3</color>
+    <color name="interest_chip_color">#4B516D</color>
+    <color name="spinnerSeasonColor">#F3F3F3</color>
+    <color name="fixedStrokeColor">#29466B</color>
+    <color name="optionMenuColor">#FFFFFF</color>
+    <color name="upload_number_color">#29466B</color>
+    <color name="upload_button_color">#E1E1E1</color>
+    <color name="reaction_selected_bg_color">#F2F2F2</color>
+    <color name="placeholder_logo_color">#F2F2F2</color>
+    <color name="strike_through_color">#FFCCE1</color>
+    <color name="redeem_dialog_invalid_header">#FFFFFF</color>
+    <color name="redeem_dialog_invalid_footer">#F2F2F2</color>
+    <color name="native_ad_button_color">#829AB8</color>
+
+    <color name="main_background_color">@color/black</color>
+    <color name="bottom_appbar_color">@color/backgroundDarkAlpha</color>
+    <color name="upload_time_text_color">#707070</color>
+    <color name="subtitle_gray_color">#979191</color>
+    <color name="subtitle_white_color">#99FFFFFF</color>
+    <color name="title_2_text_color">#BFFFFFFF</color>
+    <color name="dialog_text_color">#FFFFFF</color>
+
+    <color name="colorChipViewBackground">#E0E0E0</color>
+    <color name="colorCloseChip">#ababab</color>
+    <color name="white_transparency">#b9ffffff</color>
+    <color name="gradient_start_color">#80101218</color>
+    <color name="gradient_end_color">#38686971</color>
+    <color name="drawer_bg_color">#E6000000</color>
+
+    <!--    -->
+    <color name="backGroundClr">#40000000</color>
+    <color name="unPlayedClr">#77000000</color>
+    <color name="underLineClr">#676870</color>
+    <color name="planTextClr">#6F7077</color>
+    <color name="planPriceClr">#C3C4C8</color>
+    <color name="historyCardBack">#161721</color>
+</resources>

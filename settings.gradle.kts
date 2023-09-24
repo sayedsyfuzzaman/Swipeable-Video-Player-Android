@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Swipeable-Video-Player-Android"
 include(":app")
- 
+include(":nd_shorts")
