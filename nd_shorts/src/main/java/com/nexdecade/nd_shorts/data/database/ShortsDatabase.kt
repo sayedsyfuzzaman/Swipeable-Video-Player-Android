@@ -7,8 +7,7 @@ import androidx.room.RoomDatabase
     entities = [
         VideoPlaybackDuration::class
     ],
-    version = 1,
-    exportSchema = true
+    version = 1
 )
 abstract class ShortsDatabase : RoomDatabase() {
     companion object {

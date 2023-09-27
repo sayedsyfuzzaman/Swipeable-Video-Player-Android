@@ -70,7 +70,7 @@ class ShortsAutoPlayFragment : BaseFragment(), BaseListItemCallback<ShortsBean> 
                     if (position > 0){
                         playingShortsList.addAll(it.subList(0, position))
                     }
-//                    findNavController().navigateTo(resId = R.id.shortsFragment, args = bundleOf("shorts" to playingShortsList))
+                    findNavController().navigateTo(resId = R.id.shortsFragment, args = bundleOf("shorts" to playingShortsList))
                 }
             }
         })
