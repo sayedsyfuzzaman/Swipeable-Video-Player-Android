@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
@@ -36,6 +37,7 @@ import com.nexdecade.nd_shorts.data.MyViewModel
 import com.nexdecade.nd_shorts.data.ShortsBean
 import com.nexdecade.nd_shorts.data.database.VideoPlaybackDuration
 import com.nexdecade.nd_shorts.databinding.ItemVideoBinding
+import jp.wasabeef.transformers.core.dp
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import java.io.File

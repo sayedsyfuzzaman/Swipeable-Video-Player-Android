@@ -1,5 +1,6 @@
 package com.syfuzzaman.swipeable_video_player_android
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,8 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.media3.common.util.UnstableApi
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.nexdecade.nd_shorts.ShortsActivity
 import com.syfuzzaman.swipeable_video_player_android.common.BaseListItemCallback
 import com.nexdecade.nd_shorts.data.MyViewModel
 import com.nexdecade.nd_shorts.data.Resource
@@ -63,6 +66,7 @@ class ShortsGridFragment : Fragment(), BaseListItemCallback<ShortsBean> {
         }
     }
 
+    @UnstableApi
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
         shortsList?.let {
@@ -70,7 +74,11 @@ class ShortsGridFragment : Fragment(), BaseListItemCallback<ShortsBean> {
             if (position > 0){
                 playingShortsList.addAll(it.subList(0, position))
             }
-            findNavController().navigateTo(resId = R.id.shortsFragment, args = bundleOf("shorts" to playingShortsList))
+//            findNavController().navigateTo(resId = R.id.shortsFragment, args = bundleOf("shorts" to playingShortsList))
+            val intent = Intent(requireContext(), ShortsActivity::class.java)
+            intent.putExtra("shortsList", ArrayList(playingShortsList)) // Convert to ArrayList
+
+            startActivity(intent)
         }
     }
 }

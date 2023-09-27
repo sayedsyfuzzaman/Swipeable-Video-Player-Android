@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/black">
+        android:background="@color/black"
+        >
 
         <FrameLayout
             android:id="@+id/main_media_frame"
@@ -78,7 +79,7 @@
             android:gravity="center"
             android:layout_marginHorizontal="6dp"
             android:layout_height="wrap_content"
-            android:text="102K"
+            tools:text="102K"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:fontFamily="@font/roboto"
@@ -110,7 +111,7 @@
             android:gravity="center"
             android:layout_marginHorizontal="6dp"
             android:layout_height="wrap_content"
-            android:text="102K"
+            tools:text="102K"
             android:textColor="@color/white"
             android:fontFamily="@font/roboto"
             android:textSize="14sp"
@@ -180,12 +181,13 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Syed Syfuzzaman"
+            tools:text="Syed Syfuzzaman"
             android:fontFamily="@font/roboto_medium"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="normal"
             android:layout_marginStart="6dp"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintEnd_toStartOf="@+id/subscribeButton"
             app:layout_constraintStart_toEndOf="@id/userProfileImage"
             app:layout_constraintTop_toTopOf="@id/userProfileImage"
@@ -218,7 +220,7 @@
             android:maxLines="2"
             android:textColor="@color/white"
             android:fontFamily="@font/roboto"
-            android:text="Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one s"
+            tools:text="Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one s"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
@@ -233,7 +235,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/white"
-            android:text="#Bike, #R15, #YAMAHA"
+            tools:text="#Bike, #R15, #YAMAHA"
             android:fontFamily="@font/roboto"
             android:textStyle="bold"
             android:textSize="16sp"

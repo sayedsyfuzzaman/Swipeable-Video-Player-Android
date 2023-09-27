@@ -1,5 +1,6 @@
 package com.nexdecade.nd_shorts
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.media3.common.util.UnstableApi
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -64,13 +66,18 @@ class ShortsAutoPlayFragment : BaseFragment(), BaseListItemCallback<ShortsBean> 
         })
 
         mAdapter.SetOnItemClickListener(object : AutoPlayAdapter.OnItemClickListener {
+            @UnstableApi
             override fun onItemClick(view: View?, position: Int, model: ShortsBean?) {
                 homeViewModel.autoPlayShorts.value?.let {
                     val playingShortsList = it.subList(position, it.size).toMutableList()
                     if (position > 0){
                         playingShortsList.addAll(it.subList(0, position))
                     }
-                    findNavController().navigateTo(resId = R.id.shortsFragment, args = bundleOf("shorts" to playingShortsList))
+//                    findNavController().navigateTo(resId = R.id.shortsFragment, args = bundleOf("shorts" to playingShortsList))
+                    val intent = Intent(requireContext(), ShortsActivity::class.java)
+                    intent.putExtra("shortsList", ArrayList(playingShortsList)) // Convert to ArrayList
+
+                    startActivity(intent)
                 }
             }
         })
